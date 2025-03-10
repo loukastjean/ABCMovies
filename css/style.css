@@ -1,0 +1,241 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Inter, var(--default-font-family);
+}
+
+main {
+  overflow: hidden;
+}
+
+main, main * {
+  box-sizing: border-box;
+}
+
+input, select, textarea, button {
+  outline: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+main {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: -moz-radial-gradient(center, #351138 0%, #010101 100%);
+  background: -webkit-radial-gradient(center, #351138 0%, #010101 100%);
+  background: radial-gradient(ellipse at center, #351138 0%, #010101 100%);
+}
+
+header {
+  position: relative;
+  height: 80px;
+  top: 0;
+  left: 0;
+  background: -moz-linear-gradient(top, #351138 0%, #35113800 100%);
+  background: -webkit-linear-gradient(top, #351138 0%, #35113800 100%);
+  background: linear-gradient(to bottom, #351138 0%, #35113800 100%);
+  z-index: 1;
+}
+
+nav {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  top: 10px;
+  left: 0;
+  background-size: cover;
+}
+
+.logo {
+  width: 225px;
+  height: 45px;
+  color: #9544b0;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 48px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  max-width: 400px;
+  margin-left: 5%;
+  background: #280d2b;
+  border: 3px solid #9544b0;
+  z-index: 16;
+  border-radius: 50px;
+}
+
+.search-bar-input {
+  position: relative;
+  background: transparent;
+  left: 15px;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.search-icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  right: 10px;
+  margin-left: 20px;
+  cursor: pointer;
+  background: url("../images/search-icon.svg");
+  background-size: cover;
+}
+
+.regroup-register-login {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: absolute;
+  width: 30%;
+  top: 0;
+  right: 5%;
+}
+
+.create-account, .login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  border: 3px solid #9544b0;
+  border-radius: 10000px;
+  transform: perspective(1px);
+  transition-property: background;
+  transition-duration: 1s;
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.create-account {
+  background: #9544b0;
+}
+
+.create-account:hover {
+  background: transparent;
+  transform: perspective(1px);
+  transition-duration: 1s;
+}
+
+.login {
+  background: transparent;
+}
+
+.login:hover {
+  background: #9544b0;
+  transform: perspective(1px);
+  transition-duration: 1s;
+}
+
+/* MAIN */
+/* MAIN */
+/* MAIN */
+/* MAIN */
+/* MAIN */
+/* MAIN */
+/* MAIN */
+/* MAIN */
+
+
+.welcome-message {
+  display: flex;
+  height: 39px;
+  margin-left: 40px;
+  margin-top: 100px;
+  margin-bottom: 50px;
+  color: #9544b0;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.category-name {
+  position: relative;
+  height: 17px;
+  margin-left: 45px;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.category-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 250px;
+  justify-content: space-between;
+  margin-top: 1%;
+}
+
+.media-group {
+  position: relative;
+  left: 50px;
+  display: flex;
+  flex-wrap: nowrap;
+  height: 80%;
+  max-width: 400px;
+}
+
+.picture-related {
+  width: 200%;
+  height: 214px;
+  background: url("../images/smoothie-cafe.jpg");
+  border-radius: 27px;
+}
+
+.picture-related:hover {
+  opacity: 20%;
+}
+
+.liked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin: 4px 0 0 calc(100% - 44px);
+  padding: 3px 3px 3px 3px;
+  background: #351138;
+  border-radius: 22px;
+}
+
+.heart {
+  flex-shrink: 0;
+  position: relative;
+  width: 37px;
+  height: 37px;
+  background: url("../images/heart.svg") no-repeat center;
+  background-size: cover;
+}
+
+.media-text-background {
+  color: #ffffff00;
+  position: relative;
+  transform: perspective(1px);
+  transition-duration: 1s;
+}
+
+.media-text-background:hover {
+  color: #ffffff;
+  transform: perspective(1px);
+  transition-duration: 1s;
+}

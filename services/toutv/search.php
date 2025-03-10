@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-include $_SERVER['DOCUMENT_ROOT'].'/common/show.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/src/services/common/show.php';
 
 $available_shows = array();
 
@@ -24,7 +24,6 @@ curl_close($ch);
 ?>
 
 <!DOCTYPE html>
-input:button
 <html lang="en">
 <head>
     <meta charset="UTF-8">
