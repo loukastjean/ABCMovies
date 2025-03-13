@@ -1,4 +1,12 @@
 <?php
+declare(strict_types=1);
+include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/search.php';
+
+$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
+
+$query = $_GET["query"];
+
+$toutv_shows = get_search_results($query)
 
 ?>
 
@@ -13,25 +21,19 @@
     <link rel="stylesheet" href="./css/style.css"/>
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="./index.php" class="logo">ABCMovies</a>
-        <div class="search-bar">
-          <input type="text" class="search-bar-input" placeholder="Recherche..."/>
-          <button class="search-icon"></button>
-        </div>
-        <div class="regroup-register-login">
-          <a href="./register.php">
-            <button class="create-account">Créer un compte</button>
-          </a>
-          <a href="./login.php">
-            <button class="login">Connexion</button>
-          </a>
-        </div>
-      </nav>
-    </header>
+    <?php
+    echo $header;
+    ?>
     <main>
-
+    <?php
+    echo "<br/>";
+    
+    foreach ($toutv_shows as $i => $show) {
+        echo "<p>Title: ".$show->title."</p>";
+        echo "<p>URL: ".$show->id."</p>";
+        echo "<p>Type: ".$show->type."</p>";
+    }
+    ?>
     </main>
   </body>
 </html>

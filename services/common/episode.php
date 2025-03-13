@@ -5,6 +5,6 @@ class Episode {
     public string $id;
     public string $title;
     public string $description;
-
-    public string $name;
+    public string $image;
+    public int $number;
 }

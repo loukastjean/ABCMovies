@@ -9,7 +9,7 @@ html, body {
 }
 
 main {
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 main, main * {
@@ -166,6 +166,12 @@ nav {
   font-weight: 800;
 }
 
+.category-background {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .category-name {
   position: relative;
   height: 17px;
@@ -177,9 +183,6 @@ nav {
 
 .category-row {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  height: 250px;
   justify-content: space-between;
   margin-top: 1%;
 }
@@ -196,12 +199,11 @@ nav {
 .picture-related {
   width: 200%;
   height: 214px;
-  background: url("../images/smoothie-cafe.jpg");
   border-radius: 27px;
 }
 
 .picture-related:hover {
-  opacity: 20%;
+  
 }
 
 .liked {
@@ -228,14 +230,5 @@ nav {
 }
 
 .media-text-background {
-  color: #ffffff00;
-  position: relative;
-  transform: perspective(1px);
-  transition-duration: 1s;
-}
-
-.media-text-background:hover {
-  color: #ffffff;
-  transform: perspective(1px);
-  transition-duration: 1s;
+  
 }

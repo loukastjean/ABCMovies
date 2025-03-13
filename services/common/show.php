@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-include $_SERVER['DOCUMENT_ROOT'].'/common/season.php';
 
 class Show {
     public string $id;
@@ -9,5 +8,7 @@ class Show {
 
     public string $type;
 
-    
+    public array $seasons;
+
+    public string $image;
 }
