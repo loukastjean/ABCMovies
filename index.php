@@ -1,11 +1,11 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
-include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/radiocan/info.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/info.php';
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
 $episode = new Episode();
-$episode->id = "10325510";
+$episode->id = "961493";
 
 $info = new Info();
 $info->Episode($episode);
@@ -17,8 +17,8 @@ $info->Episode($episode);
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
+    <link href="//vjs.zencdn.net/8.23.0/video-js.min.css" rel="stylesheet">
+    <script src="//vjs.zencdn.net/8.23.0/video.min.js"></script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ABCMovies</title>
@@ -39,7 +39,7 @@ $info->Episode($episode);
         for ($j=0; $j < 4; $j++) {
           echo '
           <div class="media-group">
-            <div class="picture-related" id="'.$episode->service."-".$episode->id.'" onclick="playVideo(this)" style="background: url(\''.$episode->image.'\')">
+            <div class="picture-related" id="'.$episode->service."-".$episode->id.'" onclick="loadVideoPage(this)" style="background: url(\''.$episode->image.'\')">
               <div class="liked">
                 <div class="heart">
                 </div>
