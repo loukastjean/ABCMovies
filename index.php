@@ -17,13 +17,14 @@ $info->Episode($episode);
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ABCMovies</title>
     <link rel="stylesheet" href="./css/style.css"/>
     <script src="./js/script.js"></script>
-    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
+
   </head>
   <body>
     <?php echo $header ?>
@@ -38,7 +39,7 @@ $info->Episode($episode);
         for ($j=0; $j < 4; $j++) {
           echo '
           <div class="media-group">
-            <div class="picture-related" onclick="playVideo(this)" style="background: url(\''.$episode->image.'\')">
+            <div class="picture-related" id="'.$episode->service."-".$episode->id.'" onclick="playVideo(this)" style="background: url(\''.$episode->image.'\')">
               <div class="liked">
                 <div class="heart">
                 </div>

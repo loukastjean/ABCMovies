@@ -1,10 +1,6 @@
 <?php
 
 declare(strict_types=1);
-include $_SERVER['DOCUMENT_ROOT'].'/common/show.php';
-include $_SERVER['DOCUMENT_ROOT'].'/common/season.php';
-include $_SERVER['DOCUMENT_ROOT'].'/common/episode.php';
-
 
 class Info{
     function Episode($episode): void {
@@ -26,5 +22,6 @@ class Info{
         $episode->title = $resp["Metas"]["Title"];
         $episode->description = $resp["Metas"]["Description"];
         $episode->image = $resp["Metas"]["imageHR"];
+        $episode->service = "radiocan";
     }
 }

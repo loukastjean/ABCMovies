@@ -1,4 +1,17 @@
 
+function getRequestAsync(url) {
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+
+        }
+    }
+    request.open("GET", url, true);
+
+    return JSON.parse(request.response);
+}
+
+
 function VerifyUsername(e) {
     let usernameRegex = /^[\w-]{3,15}$/;
     let username = e.value;
@@ -73,36 +86,9 @@ function manageSubmitButton(enable) {
 }
 
 
-function loadVideoSite() {
-    
+function loadVideoPage(e) {
+    document.location.href = "https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?id=" + e.getAttribute("id");
 }
-
-
-function playVideo(e) {
-
-    if (document.getElementById("my-player")) {
-        return;
-    }
-
-    let video = document.createElement("video");
-    video.setAttribute("id", "my-player");
-    video.setAttribute("class", "video-js");
-    video.setAttribute("controls", "");
-    video.setAttribute("data-setup", "{}");
-
-    let streamSource = document.createElement("source");
-    streamSource.setAttribute("src", "https://rcavmedias1.akamaized.net/out/v1/c1dc7984c65d43dda32032029495a289/462c5efac1cd4f16a3b09d3b4584e64a/7dc7dbfefd7a4ba9a800d2885e73a8a2/index.m3u8");
-    streamSource.setAttribute("type", "application/x-mpegURL");
-    
-    video.appendChild(streamSource);
-
-    //video.setAttribute("");
-
-    e.appendChild(video)
-    let player = videojs("my-player");
-    console.log("ALSF")
-}
-
 
 
 

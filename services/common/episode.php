@@ -7,4 +7,5 @@ class Episode {
     public string $description;
     public string $image;
     public int $number;
+    public string $service;
 }
