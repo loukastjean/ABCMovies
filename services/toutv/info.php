@@ -25,7 +25,7 @@ class Info{
 
         foreach ($resp["content"][0]["lineups"] as $_ => $s) {
             $season = new Season();
-            $show->seasons[] = $season;
+            array_push($show->seasons, $season);
 
             $season->title = $s["title"];
             $season->number = $s["seasonNumber"];
@@ -36,7 +36,7 @@ class Info{
                 }
 
                 $episode = new Episode();
-                $season->episodes[] = $episode;
+                array_push($season->episodes, $episode);
 
                 $episode->id = $e["idMedia"];
                 $episode->title = $e["title"];
@@ -47,6 +47,30 @@ class Info{
         }
     }
 
-    
+    function Episode($episode): void {
 
+        $ch = curl_init("https://services.radio-canada.ca/media/meta/v1/index.ashx?appCode=toutv&output=jsonObject&idMedia=".$episode->id);
+    
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HEADER => FALSE
+        ));
+        
+        $str_response = curl_exec($ch);
+        
+        $resp = json_decode($str_response, TRUE);
+        
+        curl_close($ch);
+
+        $episode->id = $resp["Metas"]["idMedia"];
+        $episode->title = $resp["Metas"]["Title"];
+        $episode->description = $resp["Metas"]["Description"];
+        $episode->image = $resp["Metas"]["imagePlayerNormalC"];
+        $episode->number = (int)$resp["Metas"]["SrcEpisode"];
+        $episode->service = "toutv";
+
+        $episode->contains_drm = (bool)$resp["Metas"]["isDrmActive"];
+
+        
+    }
 }
