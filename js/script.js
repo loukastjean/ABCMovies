@@ -1,14 +1,16 @@
 
 function getRequestAsync(url) {
-    let request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-        if (request.readyState == 4 && request.status == 200) {
-
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onload = (e) => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else {
+          console.error(xhr.statusText);
         }
-    }
-    request.open("GET", url, true);
-
-    return JSON.parse(request.response);
+      }
+    };
 }
 
 

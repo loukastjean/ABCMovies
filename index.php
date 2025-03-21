@@ -39,7 +39,7 @@ $info->Episode($episode);
         for ($j=0; $j < 4; $j++) {
           echo '
           <div class="media-group">
-            <div class="picture-related" id="'.$episode->service."-".$episode->id.'" onclick="document.location.href = "https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?id=" + e.getAttribute("id")" style="background: url(\''.$episode->image.'\')">
+            <div class="picture-related" id="'.$episode->service."-".$episode->id.'" onclick="loadVideoPage(this)" style="background: url(\''.$episode->image.'\')">
               <div class="liked">
                 <div class="heart">
                 </div>

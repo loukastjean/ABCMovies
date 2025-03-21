@@ -30,9 +30,9 @@ class Download {
 
         $token = array("x-dt-auth-token" => $episode->request_token);
 
-        $command = "/home/stjeanh25techinf/ABCMovies/main.py '".$mpd_url."' '".$episode->licence_url."' '".json_encode($token)."' '".$episode->name."'";
+        $command = "/home/stjeanh25techinf/ABCMovies/main.py '".$mpd_url."' '".$episode->licence_url."' '".json_encode($token)."' '".$episode->name."' &";
 
-        shell_exec($command);
+        $output = shell_exec($command);
 
     }
 
@@ -44,7 +44,8 @@ class Download {
 
         $raw_url = $resp["url"];
 
-        $clean_url = str_replace("filter=3000","filter=7000", $raw_url);
+        //$clean_url = str_replace("filter=3000","filter=7000", $raw_url);
+        $clean_url = $raw_url;
 
         if ($episode->contains_drm) {
             return $this->Encrypted($episode, $resp, $clean_url);
