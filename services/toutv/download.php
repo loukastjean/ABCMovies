@@ -1,22 +1,9 @@
 <?php
-
+declare(strict_types=1);
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/login.php';
 
 class Download {
 
-    function getHttpRequest($url) {
-        $ch = curl_init($url);
-    
-        curl_setopt_array($ch, array(
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HEADER => FALSE
-        ));
-        
-        $str_response = curl_exec($ch);
-        
-        curl_close($ch);
-
-        return $str_response;
-    }
 
     function Encrypted($episode, $resp, $mpd_url) {
         foreach ($resp["params"] as $_ => $param) {
@@ -30,7 +17,7 @@ class Download {
 
         $token = array("x-dt-auth-token" => $episode->request_token);
 
-        $command = "/home/stjeanh25techinf/ABCMovies/main.py '".$mpd_url."' '".$episode->licence_url."' '".json_encode($token)."' '".$episode->name."' &";
+        $command = "/home/stjeanh25techinf/ABCMovies/main.py '$mpd_url' '$episode->licence_url' '".json_encode($token)."' '$episode->name' &";
 
         $output = shell_exec($command);
 
@@ -38,7 +25,21 @@ class Download {
 
     function Episode($episode) {
 
-        $str_response = $this->getHttpRequest("https://services.radio-canada.ca/media/validation/v2/?output=json&appCode=toutv&tech=dash&idMedia=".$episode->id);
+        $url = "https://services.radio-canada.ca/media/validation/v2/?output=json&appCode=toutv&tech=dash&idMedia=".$episode->id;
+
+        $header = get_tokens();
+
+        $ch = curl_init($url);
+    
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HEADER => FALSE,
+            CURLOPT_HTTPHEADER => $header,
+        ));
+        
+        $str_response = curl_exec($ch);
+        
+        curl_close($ch);
 
         $resp = json_decode($str_response, TRUE);
 

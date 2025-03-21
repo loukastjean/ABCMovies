@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/show.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/show.php';
 
 function get_search_results($show_name): array{
     $available_shows = array();

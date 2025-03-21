@@ -1,14 +1,17 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
-include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/info.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/show.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/info.php';
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
-$episode = new Episode();
-$episode->id = "961493";
-
 $info = new Info();
-$info->Episode($episode);
+
+$show = new Show();
+
+$show->id = "stat";
+
+$info->Show($show);
 
 ?>
 
@@ -17,8 +20,6 @@ $info->Episode($episode);
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="//vjs.zencdn.net/8.23.0/video-js.min.css" rel="stylesheet">
-    <script src="//vjs.zencdn.net/8.23.0/video.min.js"></script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ABCMovies</title>
@@ -31,27 +32,26 @@ $info->Episode($episode);
     <main>
       <span class="welcome-message">Bienvenue sur ABCMovies! ($username)!</span>
       <?php
-      for ($i=0; $i < 2; $i++) { 
+      foreach ($show->seasons as $_ => $season) {
         echo '
         <span class="category-name">Films ICI TOU.TV</span>
         <div class="category-background">';
 
-        for ($j=0; $j < 4; $j++) {
+        foreach ($season->episodes as $_ => $episode) {
+          $id = $episode->service."-".$episode->id;
           echo '
           <div class="media-group">
-            <div class="picture-related" id="'.$episode->service."-".$episode->id.'" onclick="loadVideoPage(this)" style="background: url(\''.$episode->image.'\')">
+            <a href="https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?id='.$id.'" class="picture-related" id="'.$id.'" onclick="loadVideoPage(this)" style="background: url(\''.$episode->image.'\')">
               <div class="liked">
                 <div class="heart">
                 </div>
               </div>
               <div class="media-text-background"></div>
               <span class="lorem-ipsum-dolor">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Curabitur tempor, turpis vitae ultrices euismod, augue mi
-                pretium est, eget tristique nibh diam ut elit.
+                '.$episode->description.'
               </span>
             </div>
-            <span class="lorem-ipsum">Lorem Ipsum Dolor Sit Amet
+            <span class="lorem-ipsum">'.$episode->title.'
             </span>
           </div>';
         }

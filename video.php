@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
@@ -44,18 +44,18 @@ let hls;
 let videoSrc;
 
 document.addEventListener("DOMContentLoaded", function() {
-  loadVideo("<?php echo $request_id ?>");
+    loadVideo("<?php echo $request_id ?>");
 })
 
 async function loadVideo(request_id) {
 
-  let r = await fetch("https://st-jean.h25.techinfo420.ca/ABCMovies/testing.php?id=" + request_id);
+    let r = await fetch("https://st-jean.h25.techinfo420.ca/ABCMovies/loadVideo.php?id=" + request_id);
 
-  videoSrc = await r.text();
+    videoSrc = await r.text();
 
-  console.log("The video source is " + videoSrc);
+    console.log("The video source is " + videoSrc);
 
-  createPlayer();
+    loadPlaylist();
 }
 
 function createPlayer() {
@@ -67,39 +67,70 @@ function createPlayer() {
         captionsTextTrack2LanguageCode: "en",
     })
 
-    player.src({src: videoSrc})
+    player.src({
+        src: videoSrc
+    })
 }
+
+
+
+addEventListener("beforeunload", (event) => {
+    alert("Removing " + request_id);
+    removeVideo();
+})
+
+
+
+async function removeVideo() {
+    await fetch("https://st-jean.h25.techinfo420.ca/ABCMovies/deleteVideo.php?id=" + request_id);
+}
+
 
 let lastPlaylistContent = '';
 
 async function loadPlaylist() {
 
-  if (typeof videoSrc != "string") {
-    console.log("The type of videosrc is not a string");
-    return;
-  }
-  console.log("Videosrc is a string");
+    if (typeof videoSrc !== "string") {
+        console.log("The type of videosrc is not a string");
+        return;
+    }
 
-    let r = await fetch(videoSrc + "?t=" + Date.now());
+    console.log("Videosrc is a string");
 
-        let newContent = await r.text();
-        
-        console.log(newContent);
+    //let r = await fetch(videoSrc + "?t=" + Date.now());
 
-        if (newContent !== lastPlaylistContent) {
-            lastPlaylistContent = newContent;
+    let r = await fetch(videoSrc);
 
-            let currentTime = player.currentTime();
-            hls.loadSource(videoSrc);
+    let newContent = await r.text();
 
-            hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
-                console.log("Trouve " + data.levels.length + " qualites");
-            });
+    if (!newContent.startsWith("#")) {
+        return;
+    }
 
-            player.ready(() => {
-                player.currentTime(currentTime);
-            });
-        }
+    console.log("The video starts with #, so a playlist");
+
+    if (!hls) {
+        createPlayer();
+    }
+
+
+
+    console.log(newContent);
+
+    if (newContent !== lastPlaylistContent) {
+        lastPlaylistContent = newContent;
+
+        let currentTime = player.currentTime();
+        hls.loadSource(videoSrc);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+            console.log("Trouve " + data.levels.length + " qualites");
+        });
+
+        player.ready(() => {
+            player.currentTime(currentTime);
+        });
+    }
 }
 
 setInterval(loadPlaylist, 2000);

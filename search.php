@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/search.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/search.php';
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
