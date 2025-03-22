@@ -20,7 +20,7 @@ function get_movies() {
     
     curl_close($ch);
 
-    foreach ($resp["content"]["items"]["results"] as $_ => $result) {
+    foreach ($resp["content"][0]["items"]["results"] as $_ => $result) {
         $show = new Show();
         array_push($movies, $show);
 

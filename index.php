@@ -9,7 +9,7 @@ $info = new Info();
 
 $show = new Show();
 
-$show->id = "stat";
+$show->id = "l-agent-jean";
 
 $info->Show($show);
 
@@ -41,7 +41,7 @@ $info->Show($show);
           $id = $episode->service."-".$episode->id;
           echo '
           <div class="media-group">
-            <a href="https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?id='.$id.'" class="picture-related" id="'.$id.'" onclick="loadVideoPage(this)" style="background: url(\''.$episode->image.'\')">
+            <a href="https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?id='.$id.'" class="picture-related" id="'.$id.'" style="background: url(\''.str_replace("_Size_","400", $episode->image).'\')">
               <div class="liked">
                 <div class="heart">
                 </div>
@@ -50,7 +50,7 @@ $info->Show($show);
               <span class="lorem-ipsum-dolor">
                 '.$episode->description.'
               </span>
-            </div>
+            </a>
             <span class="lorem-ipsum">'.$episode->title.'
             </span>
           </div>';

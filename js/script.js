@@ -88,11 +88,6 @@ function manageSubmitButton(enable) {
 }
 
 
-function loadVideoPage(e) {
-    document.location.href = "https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?id=" + e.getAttribute("id");
-}
-
-
 
 
 

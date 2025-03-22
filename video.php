@@ -37,6 +37,11 @@ let player = videojs("my-player", {
     controls: true,
     autoplay: true,
     preload: "auto",
+    liveui: true,
+    liveTracker: {
+        trackingThreshold: 0,
+        liveTolerance: 0,
+    }
 });
 
 let hls;
@@ -48,6 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 async function loadVideo(request_id) {
+
+    console.log("Fetching: " + "https://st-jean.h25.techinfo420.ca/ABCMovies/loadVideo.php?id=" + request_id)
 
     let r = await fetch("https://st-jean.h25.techinfo420.ca/ABCMovies/loadVideo.php?id=" + request_id);
 
@@ -73,14 +80,6 @@ function createPlayer() {
 }
 
 
-
-addEventListener("beforeunload", (event) => {
-    alert("Removing " + request_id);
-    removeVideo();
-})
-
-
-
 async function removeVideo() {
     await fetch("https://st-jean.h25.techinfo420.ca/ABCMovies/deleteVideo.php?id=" + request_id);
 }
@@ -91,6 +90,7 @@ let lastPlaylistContent = '';
 async function loadPlaylist() {
 
     if (typeof videoSrc !== "string") {
+        console.log(videoSrc);
         console.log("The type of videosrc is not a string");
         return;
     }

@@ -10,4 +10,3 @@ $episode->id = "961493";
 $info = new Info();
 $info->Episode($episode);
 
-var_dump($info);
