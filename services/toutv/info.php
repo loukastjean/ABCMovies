@@ -68,6 +68,8 @@ class Info{
         
         curl_close($ch);
 
+        error_log("Error handling media with URL: "."https://services.radio-canada.ca/media/meta/v1/index.ashx?appCode=toutv&output=jsonObject&idMedia=".$episode->id);
+
         $episode->id = $resp["Metas"]["idMedia"];
         $episode->title = $resp["Metas"]["Title"];
         $episode->description = $resp["Metas"]["Description"];

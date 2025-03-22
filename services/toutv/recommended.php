@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/show.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/info.php';
 
-function get_movies() {
+function get_movies(): array {
 
+    $info = new Info();
     $movies = array();
 
     $ch = curl_init("https://services.radio-canada.ca/ott/catalog/v2/toutv/category/film?device=web&pageNumber=1&pageSize=999999999");
@@ -30,6 +32,7 @@ function get_movies() {
         $show->image = $result["images"]["background"]["url"];
         $show->type = $result["type"];
     }
+    
 
     return $movies;
 }
