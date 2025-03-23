@@ -6,6 +6,7 @@ function getRequestAsync(url) {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           console.log(xhr.responseText);
+          return xhr.responseText;
         } else {
           console.error(xhr.statusText);
         }
@@ -87,9 +88,81 @@ function manageSubmitButton(enable) {
     }
 }
 
+function PlaceVideos() {
+
+    url = "https://st-jean.h25.techinfo420.ca/ABCMovies/services/toutv/recommendations.php?category=";
+    
+    series = getRequestAsync(url + "serie");
+    series = JSON.parse(series);
+
+    pictureElements = document.getElementsByClassName("picture-related");
+
+    for (let i = 0; i < 4; i++) {
+        pictureElements[i].setAttribute("href", "https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?service=toutv&id=" + series[i]["seasons"][0]["episodes"][0]["id"])
+    }
+
+    pictureElements.forEach(capsule => {
+        capsule.setAttribute("href", "https://st-jean.h25.techinfo420.ca/ABCMovies/")
+    });
 
 
+}
 
+function fetchJSON(url, data) {
+    if (data) {
+        // POST
+        return fetch(url, {
+            method: "POST",
+            body: JSON.stringify(data),
+        }).then(response => response.json());
+
+    } else {
+        return fetch(url).then(response => response.json());
+    }
+}
+
+async function editPage(episodeTitle) {
+    titleEl = document.getElementsByTagName("title")[0];
+
+    titleEl.textContent = episodeTitle + titleEl.textContent;
+}
+
+async function episodeInfo() {
+    data = await fetchJSON("https://st-jean.h25.techinfo420.ca/ABCMovies/services/<?php echo $service ?>/info.php?type=episode&id=<?php echo $id ?>", null);
+
+    return data;
+
+}
+
+async function login(availability) {
+    tokens = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/<?php echo $service ?>/login.php?availability=${availability}`, null);
+
+    return tokens;
+}
+
+async function download(id, tokens) {
+    let strTokens = JSON.stringify(tokens);
+    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/<?php echo $service ?>/download.php?id=${id}&tokens=${strTokens}`, null);
+    return commandOutput;
+}
+
+
+async function fetchVideo() {
+    let episode = await episodeInfo();
+    console.log(JSON.stringify(episode));
+    console.log("Got the episode info");
+
+    editPage(episode["title"]);
+    console.log("Finished editing page using episode info!");
+
+    let tokens = await login(episode["availability"]);
+    console.log("Logged in and got the request headers!");
+
+    let downloadOutput = await download(episode["id"], tokens);
+
+    let playlistPath = downloadOutput["output"];
+    return playlistPath;
+}
 
 
 

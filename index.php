@@ -1,16 +1,8 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/show.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/info.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/recommended.php';
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
 
-
-$shows = get_movies();
-
-$info = new Info();
 
 ?>
 

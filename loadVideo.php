@@ -15,9 +15,6 @@ $episode->name = $request_id;
 include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/'.$service.'/info.php';
 include $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/'.$service.'/download.php';
 
-$info = new Info();
-$download = new Download();
-
 $info->Episode($episode);
 
 $stream_url = $download->Episode($episode);

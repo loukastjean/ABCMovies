@@ -1,84 +1,147 @@
 <?php
 
 declare(strict_types=1);
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/show.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/season.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/common/episode.php';
 
-class Info{
-    function Show($show): void {
+$info_type = $_GET["type"];
 
-        $ch = curl_init("https://services.radio-canada.ca/ott/catalog/v2/toutv/show/".$show->id."?device=web");
-    
-        curl_setopt_array($ch, array(
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HEADER => FALSE
-        ));
-        
-        $str_response = curl_exec($ch);
-        
-        $resp = json_decode($str_response, TRUE);
-        
-        curl_close($ch);
+$allowed_types = ["show", "season", "episode"];
 
-        $show->title = $resp["title"];
-        $show->description = $resp["description"];
-        $show->image = $resp["images"]["background"]["url"];
-        $show->seasons = [];
+if (!in_array($info_type, $allowed_types)) {
+    echo json_encode(["error" => "La categorie $info_type n'existe pas"]);
+    die();
+}
 
-        foreach ($resp["content"][0]["lineups"] as $_ => $s) {
-            $season = new Season();
-            array_push($show->seasons, $season);
-            $season->episodes = [];
+$id;
+$season_number;
 
-            $season->title = $s["title"];
-            $season->number = $s["seasonNumber"];
+if (isset($_GET["id"])) {
+    $id = $_GET["id"];
+}
 
-            foreach ($s["items"] as $_ => $e) {
-                if ($e["mediaType"] == "Trailer") {
-                    continue;
-                }
+if (isset($_GET["season"])) {
+    $season_number = $_GET["season"];
+}
 
-                $episode = new Episode();
-                array_push($season->episodes, $episode);
 
-                $episode->id = (string)$e["idMedia"];
-                $episode->title = $e["title"];
-                $episode->description = $e["description"];
-                $episode->image = $e["images"]["card"]["url"];
-                $episode->number = $e["episodeNumber"];
 
-                $episode->service = "toutv";
+switch ($info_type) {
+    case "show":
+        echo Show($id);
+        break;
+
+    case "season":
+        echo Season();
+        break;
+
+    case "episode":
+        echo Episode($id);
+        break;
+}
+
+function Show($id): string
+{
+    $ch = curl_init(
+        "https://services.radio-canada.ca/ott/catalog/v2/toutv/show/" .
+            $id .
+            "?device=web"
+    );
+
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => false,
+    ]);
+
+    $str_response = curl_exec($ch);
+
+    $resp = json_decode($str_response, true);
+
+    curl_close($ch);
+
+    $show = [];
+
+    $show["title"] = $resp["title"];
+    $show["description"] = $resp["description"];
+    $show["image"] = $resp["images"]["background"]["url"];
+    $show["seasons"] = [];
+
+    foreach ($resp["content"][0]["lineups"] as $_ => $s) {
+        $season = [];
+
+        $season["episodes"] = [];
+
+        $season["title"] = $s["title"];
+        $season["number"] = $s["seasonNumber"];
+
+        foreach ($s["items"] as $_ => $e) {
+            if ($e["mediaType"] == "Trailer" || !isset($e["idMedia"])) {
+                continue;
             }
+
+            $episode = [];
+
+            $episode["id"] = (string) $e["idMedia"];
+            $episode["title"] = $e["title"];
+            $episode["description"] = $e["description"];
+            $episode["image"] = $e["images"]["card"]["url"];
+            $episode["number"] = $e["episodeNumber"];
+
+            $episode["service"] = "toutv";
+
+            array_push($season["episodes"], $episode);
         }
+
+        array_push($show["seasons"], $season);
     }
 
-    function Episode($episode): void {
+    return json_encode($show);
+}
 
-        $ch = curl_init("https://services.radio-canada.ca/media/meta/v1/index.ashx?appCode=toutv&output=jsonObject&idMedia=".$episode->id);
-    
-        curl_setopt_array($ch, array(
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HEADER => FALSE
-        ));
-        
-        $str_response = curl_exec($ch);
-        
-        $resp = json_decode($str_response, TRUE);
-        
-        curl_close($ch);
+function Season(): string
+{
+    $error_message = [
+        "error" =>
+            "Toutv ne supporte pas de recueillir les saisons directement, il faut plutot les recueillir a partir de ?id=show",
+    ];
+    return json_encode($error_message);
+}
 
-        error_log("Error handling media with URL: "."https://services.radio-canada.ca/media/meta/v1/index.ashx?appCode=toutv&output=jsonObject&idMedia=".$episode->id);
+function Episode($id): string
+{
+    $ch = curl_init(
+        "https://services.radio-canada.ca/media/meta/v1/index.ashx?appCode=toutv&output=jsonObject&idMedia=" .
+            $id
+    );
 
-        $episode->id = $resp["Metas"]["idMedia"];
-        $episode->title = $resp["Metas"]["Title"];
-        $episode->description = $resp["Metas"]["Description"];
-        $episode->image = $resp["Metas"]["imagePlayerNormalC"];
-        $episode->number = (int)$resp["Metas"]["SrcEpisode"];
-        $episode->service = "toutv";
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => false,
+    ]);
 
-        $episode->contains_drm = (bool)$resp["Metas"]["isDrmActive"];
+    $str_response = curl_exec($ch);
 
-        
+    $resp = json_decode($str_response, true);
+
+    curl_close($ch);
+
+    $episode = [];
+
+    $episode["id"] = $resp["Metas"]["idMedia"];
+    $episode["title"] = $resp["Metas"]["Title"];
+    $episode["description"] = $resp["Metas"]["Description"];
+    $episode["image"] = $resp["Metas"]["imagePlayerNormalC"];
+    $episode["number"] = (int) $resp["Metas"]["SrcEpisode"];
+
+    $episode["service"] = "toutv";
+
+    $episode["contains_drm"] = (bool)$resp["Metas"]["isDrmActive"];
+
+    if ((bool)$resp["Metas"]["IsFree"]) {
+        $episode["availability"] = "free";
     }
+    else {
+        # Faux, je ne sais pas si c'est Member ou premium, mais je peux pas savoir :(
+        $episode["availability"] = "paid";
+    }
+
+    return json_encode($episode);
 }
