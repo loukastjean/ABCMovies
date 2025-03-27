@@ -1,21 +1,7 @@
 
-function getRequestAsync(url) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.onload = (e) => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          console.log(xhr.responseText);
-          return xhr.responseText;
-        } else {
-          console.error(xhr.statusText);
-        }
-      }
-    };
-}
 
 
-function VerifyUsername(e) {
+function verifyUsername(e) {
     let usernameRegex = /^[\w-]{3,15}$/;
     let username = e.value;
 
@@ -45,7 +31,7 @@ function VerifyUsername(e) {
 }
 
 
-function VerifyPassword(e) {
+function verifyPassword(e) {
     // Au moins une maj, min, chiffre et charactere special avec au moins 8 characteres
     let passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
     let password = e.value;
@@ -88,61 +74,68 @@ function manageSubmitButton(enable) {
     }
 }
 
-function PlaceVideos() {
-
-    url = "https://st-jean.h25.techinfo420.ca/ABCMovies/services/toutv/recommendations.php?category=";
-    
-    series = getRequestAsync(url + "serie");
-    series = JSON.parse(series);
-
-    pictureElements = document.getElementsByClassName("picture-related");
-
-    for (let i = 0; i < 4; i++) {
-        pictureElements[i].setAttribute("href", "https://st-jean.h25.techinfo420.ca/ABCMovies/video.php?service=toutv&id=" + series[i]["seasons"][0]["episodes"][0]["id"])
-    }
-
-    pictureElements.forEach(capsule => {
-        capsule.setAttribute("href", "https://st-jean.h25.techinfo420.ca/ABCMovies/")
-    });
-
-
+function aaa() {
+    console.log("This is working");
 }
 
-function fetchJSON(url, data) {
+async function placeVideos(service, contentType) {
+
+    categoriesParent = document.getElementsByTagName("main");
+    categoriesParent = categoriesParent[0];
+    categoryName = `${contentType} ${service}`;
+
+    console.log(categoriesParent);
+
+    await createCategory(categoriesParent, categoryName);
+
+
+
+    url = `https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/recommendations.php?category=`;
+    
+    content = getRequestAsync(url + contentType);
+    content = JSON.parse(content);
+
+    for (let i = 0; i < 4; i++) {
+        let episode = series[i]["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
+        await createMedia(categoryEl, episode["id"], episode["title"], episode["description"], episode["image"]);
+    }
+}
+
+async function fetchJSON(url, data) {
     if (data) {
         // POST
-        return fetch(url, {
+        return await fetch(url, {
             method: "POST",
             body: JSON.stringify(data),
         }).then(response => response.json());
 
     } else {
-        return fetch(url).then(response => response.json());
+        return await fetch(url).then(response => response.json());
     }
 }
 
-async function editPage(episodeTitle) {
+async function setPageTitle(episodeTitle) {
     titleEl = document.getElementsByTagName("title")[0];
 
     titleEl.textContent = episodeTitle + titleEl.textContent;
 }
 
-async function episodeInfo() {
-    data = await fetchJSON("https://st-jean.h25.techinfo420.ca/ABCMovies/services/<?php echo $service ?>/info.php?type=episode&id=<?php echo $id ?>", null);
+async function episodeInfo(service, id) {
+    data = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/info.php?type=episode&id=${id}`, null);
 
     return data;
 
 }
 
-async function login(availability) {
-    tokens = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/<?php echo $service ?>/login.php?availability=${availability}`, null);
+async function login(service, availability) {
+    tokens = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/login.php?availability=${availability}`, null);
 
     return tokens;
 }
 
-async function download(id, tokens) {
+async function download(service, id, tokens) {
     let strTokens = JSON.stringify(tokens);
-    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/<?php echo $service ?>/download.php?id=${id}&tokens=${strTokens}`, null);
+    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
     return commandOutput;
 }
 
@@ -164,7 +157,72 @@ async function fetchVideo() {
     return playlistPath;
 }
 
+async function getVideoInfo(id) {
+
+    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
+    return commandOutput;
+
+}
 
 
+async function createCategory(parentEl, categoryName) {
 
+    let categoryNameEl = document.createElement("span");
+
+    categoryNameEl.setAttribute("class", "category-name");
+    categoryNameEl.textContent = categoryName;
+
+    let categoryEl = document.createElement("div");
+
+    categoryEl.setAttribute("class", "category-background");
+
+    parentEl.AppendChild(categoryNameEl);
+    parentEl.AppendChild(categoryEl);
+}
+
+async function createMedia(parentEl, id, title, description, backgroundUrl) {
+
+    let mediaGroupEl = document.createElement("div");
+
+    mediaGroupEl.setAttribute("class", "media-group");
+
+    let mediaLinkEl = document.createElement("a");
+
+    mediaLinkEl.setAttribute("href", `../video.php?id=${id}`) // OK, DEMANDER A CLAUDE POUR LIENS QUI SONT GERNE DYNAMIQUE PAR RAPPORT A SA POSITION
+    mediaLinkEl.setAttribute("class", "picture-related")
+    mediaLinkEl.setAttribute("style", `background: url('${backgroundUrl}')`)
+
+    let likedEl = document.createElement("div");
+
+    likedEl.setAttribute("class", "liked");
+
+    let heartEl = document.createElement("div");
+
+    heartEl.setAttribute("class", "heart");
+
+    let mediaTextBackgroundEl = document.createElement("div");
+
+    mediaTextBackgroundEl.setAttribute("class", "media-text-background");
+
+    let descriptionEl = document.createElement("span");
+
+    descriptionEl.setAttribute("class", "lorem-ipsum-dolor");
+    descriptionEl.textContent = description;
+
+    let titleEl = document.createElement("span");
+
+    titleEl.setAttribute("class", "lorem-ipsum");
+    titleEl.textContent = title;
+
+    likedEl.AppendChild(heartEl);
+
+    mediaLinkEl.AppendChild(likedEl);
+    mediaLinkEl.AppendChild(mediaTextBackgroundEl);
+    mediaLinkEl.AppendChild(descriptionEl);
+
+    mediaGroupEl.AppendChild(mediaLinkEl);
+    mediaGroupEl.AppendChild(titleEl);
+
+    parentEl.AppendChild(mediaGroupEl);
+}
 
