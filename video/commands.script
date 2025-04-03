@@ -45,4 +45,19 @@ ffmpeg -y -i BBB.mp4 \
   BBB_%v/playlist.m3u8
 
 
+_________________________________________________
 
+CUSTOM
+
+ffmpeg -y -i videos/BBB.mp4 -crf 22 -preset veryfast
+-s 1920x1080 -c copy
+-s 1280x720 -c:v h264 -b:v 3000k
+-s 852x480 -c:v h264 -b:v 1200k
+-s 640x360 -c:v h264 -b:v 800k
+-f mpegts
+pipe: > pipe1
+
+
+./shaka-packager --io_block_size 65536 input=pipe_toutv-961493,stream=audio,init_segment=audio/init.mp4,segment_template=audio/\$Number\$.m4s,playlist_name=audio/playlist.m3u8,hls_group_id=audio input=pipe_toutv-961493,stream=video,init_segment=video_360p/init.mp4,segment_template=video_360p/segment_\$Number\$.m4s,playlist_name=video_360p/playlist.m3u8,hls_group_id=video input=pipe_toutv-961493,stream=video,init_segment=video_480p/init.mp4,segment_template=video_480p/segment_\$Number\$.m4s,playlist_name=video_480p/playlist.m3u8,hls_group_id=video input=pipe_toutv-961493,stream=video,init_segment=video_720p/init.mp4,segment_template=video_720p/segment_\$Number\$.m4s,playlist_name=video_720p/playlist.m3u8,hls_group_id=video input=pipe_toutv-961493,stream=video,init_segment=video_1080p/init.mp4,segment_template=video_1080p/segment_\$Number\$.m4s,playlist_name=video_1080p/playlist.m3u8,hls_group_id=video --generate_static_live_mpd --hls_playlist_type VOD --mpd_output toutv-961493.mpd --hls_master_playlist_output toutv-961493.m3u8
+
+./ffmpeg -y -i videos/BBB.mp4 -crf 22 -preset veryfast -s 1920x1080 -c copy -s 1280x720 -c:v h264 -b:v 3000k -f mpegts pipe_toutv-961493

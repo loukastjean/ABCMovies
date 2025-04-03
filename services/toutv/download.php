@@ -11,8 +11,8 @@ $claims_token;
 #    $login_headers = $_GET["tokens"];
 #}
 
-if (isset($_POST["id"])) {
-    $id = $_POST["id"];
+if (isset($_GET["id"])) {
+    $id = $_GET["id"];
 }
 
 if (isset($_POST["Authorization"])) {
@@ -73,7 +73,7 @@ foreach ($resp["params"] as $_ => $param) {
 
 $mpd_headers = ["x-dt-auth-token" => $request_token];
 
-$command = "/home/stjeanh25techinf/ABCMovies/main.py '$mpd_url' '$licence_url' '".json_encode($mpd_headers)."' 'toutv-$id'";
+$command = "~/ABCMovies/.venv/bin/python ~/ABCMovies/main.py '$mpd_url' '$licence_url' '".json_encode($mpd_headers)."' 'toutv-$id'";
 
 $output = shell_exec($command);
 

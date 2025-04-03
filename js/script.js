@@ -123,21 +123,17 @@ async function setPageTitle(episodeTitle) {
 
 async function getInfo(service, infoType, id) {
     data = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/info.php?type=${infoType}&id=${id}`, null);
-
     return data;
 
 }
 
 async function login(service, availability) {
     tokens = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/login.php?availability=${availability}`, null);
-
     return tokens;
 }
 
 async function download(service, id, tokens) {
-    tokens["id"] = id;
-    console.log(JSON.stringify(tokens));
-    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php`, tokens);
+    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php?id=${id}`, tokens);
     return commandOutput;
 }
 
