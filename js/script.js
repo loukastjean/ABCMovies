@@ -74,30 +74,27 @@ function manageSubmitButton(enable) {
     }
 }
 
-function aaa() {
-    console.log("This is working");
-}
-
 async function placeVideos(service, contentType) {
 
     categoriesParent = document.getElementsByTagName("main");
-    categoriesParent = categoriesParent[0];
-    categoryName = `${contentType} ${service}`;
+    categoriesParentEl = categoriesParent[0];
 
-    console.log(categoriesParent);
+    await createCategory(categoriesParentEl, service, contentType);
 
-    await createCategory(categoriesParent, categoryName);
+    let categoryEl = document.getElementById(`${service}-${contentType}`);
 
-
-
-    url = `https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/recommendations.php?category=`;
+    url = `https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/recommendations.php?category=${contentType}`;
     
-    content = getRequestAsync(url + contentType);
-    content = JSON.parse(content);
+    recommendations = await fetchJSON(url);
 
     for (let i = 0; i < 4; i++) {
-        let episode = series[i]["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
-        await createMedia(categoryEl, episode["id"], episode["title"], episode["description"], episode["image"]);
+        let recommendationInfo = await getInfo(service, "show", recommendations[i]["id"]);
+
+        let episode = recommendationInfo["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
+
+        console.log(categoryEl);
+
+        await createMedia(categoryEl, service, episode["id"], episode["title"], episode["description"], episode["image"]);
     }
 }
 
@@ -106,7 +103,11 @@ async function fetchJSON(url, data) {
         // POST
         return await fetch(url, {
             method: "POST",
-            body: JSON.stringify(data),
+            // NON NON NON NON POURQUOIIIIIIIIIIIIIII
+            body: new URLSearchParams(data),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
         }).then(response => response.json());
 
     } else {
@@ -120,8 +121,8 @@ async function setPageTitle(episodeTitle) {
     titleEl.textContent = episodeTitle + titleEl.textContent;
 }
 
-async function episodeInfo(service, id) {
-    data = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/info.php?type=episode&id=${id}`, null);
+async function getInfo(service, infoType, id) {
+    data = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/info.php?type=${infoType}&id=${id}`, null);
 
     return data;
 
@@ -134,26 +135,32 @@ async function login(service, availability) {
 }
 
 async function download(service, id, tokens) {
-    let strTokens = JSON.stringify(tokens);
-    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
+    tokens["id"] = id;
+    console.log(JSON.stringify(tokens));
+    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php`, tokens);
     return commandOutput;
 }
 
 
-async function fetchVideo() {
-    let episode = await episodeInfo();
+async function fetchVideo(service, id) {
+    let episode = await getInfo(service, "episode", id);
     console.log(JSON.stringify(episode));
     console.log("Got the episode info");
 
-    editPage(episode["title"]);
+    setPageTitle(episode["title"]);
     console.log("Finished editing page using episode info!");
 
-    let tokens = await login(episode["availability"]);
+    let tokens = await login(service, episode["availability"]);
     console.log("Logged in and got the request headers!");
 
-    let downloadOutput = await download(episode["id"], tokens);
+    console.log(episode);
+
+    let downloadOutput = await download(service, episode["id"], tokens);
 
     let playlistPath = downloadOutput["output"];
+
+    console.log(downloadOutput);
+
     return playlistPath;
 }
 
@@ -165,22 +172,23 @@ async function getVideoInfo(id) {
 }
 
 
-async function createCategory(parentEl, categoryName) {
+async function createCategory(parentEl, service, contentType) {
 
     let categoryNameEl = document.createElement("span");
 
-    categoryNameEl.setAttribute("class", "category-name");
-    categoryNameEl.textContent = categoryName;
+    categoryNameEl.setAttribute("class", `category-name`);
+    categoryNameEl.setAttribute("id", `${service}-${contentType}`);
+    categoryNameEl.textContent = `${contentType} ${service}`;
 
     let categoryEl = document.createElement("div");
 
     categoryEl.setAttribute("class", "category-background");
 
-    parentEl.AppendChild(categoryNameEl);
-    parentEl.AppendChild(categoryEl);
+    parentEl.appendChild(categoryNameEl);
+    parentEl.appendChild(categoryEl);
 }
 
-async function createMedia(parentEl, id, title, description, backgroundUrl) {
+async function createMedia(parentEl, service, id, title, description, backgroundUrl) {
 
     let mediaGroupEl = document.createElement("div");
 
@@ -188,7 +196,7 @@ async function createMedia(parentEl, id, title, description, backgroundUrl) {
 
     let mediaLinkEl = document.createElement("a");
 
-    mediaLinkEl.setAttribute("href", `../video.php?id=${id}`) // OK, DEMANDER A CLAUDE POUR LIENS QUI SONT GERNE DYNAMIQUE PAR RAPPORT A SA POSITION
+    mediaLinkEl.setAttribute("href", `./video.php?service=${service}&id=${id}`) // OK, DEMANDER A CLAUDE POUR LIENS QUI SONT GERNE DYNAMIQUE PAR RAPPORT A SA POSITION
     mediaLinkEl.setAttribute("class", "picture-related")
     mediaLinkEl.setAttribute("style", `background: url('${backgroundUrl}')`)
 
@@ -214,15 +222,15 @@ async function createMedia(parentEl, id, title, description, backgroundUrl) {
     titleEl.setAttribute("class", "lorem-ipsum");
     titleEl.textContent = title;
 
-    likedEl.AppendChild(heartEl);
+    likedEl.appendChild(heartEl);
 
-    mediaLinkEl.AppendChild(likedEl);
-    mediaLinkEl.AppendChild(mediaTextBackgroundEl);
-    mediaLinkEl.AppendChild(descriptionEl);
+    mediaLinkEl.appendChild(likedEl);
+    mediaLinkEl.appendChild(mediaTextBackgroundEl);
+    mediaLinkEl.appendChild(descriptionEl);
 
-    mediaGroupEl.AppendChild(mediaLinkEl);
-    mediaGroupEl.AppendChild(titleEl);
+    mediaGroupEl.appendChild(mediaLinkEl);
+    mediaGroupEl.appendChild(titleEl);
 
-    parentEl.AppendChild(mediaGroupEl);
+    parentEl.appendChild(mediaGroupEl);
 }
 

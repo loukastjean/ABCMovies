@@ -33,11 +33,13 @@ $id = $_GET["id"];
 
 <script>
 
+async function a() {
+    playlistPath = await fetchVideo("<?php echo $service ?>", "<?php echo $id ?>");
 
-playlistPath = fetchVideo();
+    console.log(playlistPath)
+}
 
-console.log(playlistPath)
-
+a();
 
 
 </script>

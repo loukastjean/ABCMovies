@@ -2,23 +2,34 @@
 declare(strict_types=1);
 
 $id;
-$login_headers;
 
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
-}
+$authorization_token;
+$claims_token;
 
-if (isset($_GET["tokens"])) {
-    $login_headers = $_GET["tokens"];
-}
 
-#$login_headers = $_POST["tokens"];
-#
-#if (isset($_POST["tokens"])) {
-#    $login_headers = $_POST["tokens"];
+#if (isset($_GET["tokens"])) {
+#    $login_headers = $_GET["tokens"];
 #}
 
-$login_headers = json_decode($login_headers, true);
+if (isset($_POST["id"])) {
+    $id = $_POST["id"];
+}
+
+if (isset($_POST["Authorization"])) {
+    $authorization_token = $_POST["Authorization"];
+}
+
+if (isset($_POST["x-claims-token"])) {
+    $claims_token = $_POST["x-claims-token"];
+}
+
+
+
+$headers = [
+    "Authorization: $authorization_token",
+    "x-claims-token: $claims_token"
+];
+
 
 $ch = curl_init(
     "https://services.radio-canada.ca/media/validation/v2/?output=json&appCode=toutv&tech=dash&idMedia=".$id
@@ -27,7 +38,7 @@ $ch = curl_init(
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HEADER => false,
-    CURLOPT_HTTPHEADER => $login_headers,
+    CURLOPT_HTTPHEADER => $headers,
 ]);
 
 $str_response = curl_exec($ch);
