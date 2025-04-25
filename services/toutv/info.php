@@ -1,6 +1,6 @@
 <?php
-
 declare(strict_types=1);
+header('Content-type: application/json');
 
 $info_type = $_GET["type"];
 

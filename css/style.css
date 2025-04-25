@@ -1,6 +1,10 @@
 :root {
   --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
+}
 
+/* JUSTE POUR RAPPELER POUR EXAM WEB */
+:root {
+  font-family: sans-serif;
 }
 
 html, body {
@@ -55,6 +59,12 @@ nav {
   top: 10px;
   left: 0;
   background-size: cover;
+}
+
+.center-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
@@ -182,18 +192,11 @@ nav {
   font-weight: 800;
 }
 
-.category-row {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1%;
-}
-
 .media-group {
   position: relative;
   left: 50px;
   display: flex;
   flex-wrap: nowrap;
-  height: 80%;
   max-width: 400px;
 }
 
@@ -232,6 +235,75 @@ nav {
 
 .media-text-background {
   
+}
+
+/* REGISTER / LOGIN STYLE */
+
+.register-login-container {
+  display: flex;
+  flex-flow: column nowrap;
+  min-width: 400px;
+  max-width: 500px;
+  padding: 20px;
+  background: rgba(15, 15, 15, 0.6);
+  border-radius: 32px;
+}
+
+.register-login-title {
+  text-align: center;
+  margin-bottom: 5%;
+  color: #9544b0;
+  font-size: xx-large;
+  font-weight: 700;
+}
+
+.register-login-input-title {
+  color: #9544b0;
+  font-size: x-large;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.register-login-input-container {
+  display: flex;
+  height: 40px;
+  max-width: 400px;
+  padding: 5px;
+  padding-left: 15px;
+  background: #280d2b;
+  border: 3px solid #9544b0;
+  border-radius: 50px;
+  margin-bottom: 10px;
+}
+
+.register-login-input {
+  border: none;
+  color: #ffffff;
+  width: 100%;
+  background: transparent;
+  font-size: large;
+  font-weight: 300;
+}
+
+.register-login-button {
+  height: 50px;
+  border: 3px solid #9544b0;
+  border-radius: 10000px;
+  transform: perspective(1px);
+  transition-property: background;
+  transition-duration: 1s;
+  color: #fff;
+  background: #9544b0;
+  font-size: 25px;
+  font-weight: 600;
+  margin-top: 30px;
+  max-width: 470px;
+}
+
+.register-login-button:hover {
+  background: transparent;
+  transform: perspective(1px);
+  transition-duration: 1s;
 }
 
 

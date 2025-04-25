@@ -14,7 +14,6 @@ $id = $_GET["id"];
   <head>
     <link href="./css/video/video-js.min.css" rel="stylesheet">
     <script src="./js/video/video.min.js"></script>
-    <script src="./js/hls/hls.min.js"></script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> | ABCMovies</title>
@@ -33,13 +32,36 @@ $id = $_GET["id"];
 
 <script>
 
-async function a() {
-    playlistPath = await fetchVideo("<?php echo $service ?>", "<?php echo $id ?>");
 
-    console.log(playlistPath)
+let player = videojs("my-player", {
+    controls: true,
+    autoplay: true,
+    preload: "auto",
+});
+
+let hasSource = false;
+
+let service = "<?php echo $service; ?>";
+let id = "<?php echo $id; ?>";
+
+
+async function isVideoDownloaded() {
+    if (await videoSrc && !hasSource) {
+        hasSource = true;
+        player.src({
+          src: await videoSrc,
+          type: "video/mp4",
+        })
+        player.load();
+    }
 }
 
-a();
 
+document.addEventListener("DOMContentLoaded", function() {
+    videoSrc = fetchVideo(service, id);
+})
+
+
+setInterval(isVideoDownloaded, 2000, service, id);
 
 </script>

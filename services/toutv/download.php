@@ -1,26 +1,17 @@
 <?php
 declare(strict_types=1);
+header('Content-type: application/json');
 
 $id;
 
 $authorization_token;
 $claims_token;
 
-
-#if (isset($_GET["tokens"])) {
-#    $login_headers = $_GET["tokens"];
-#}
-
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
-}
-
-if (isset($_POST["Authorization"])) {
-    $authorization_token = $_POST["Authorization"];
-}
-
-if (isset($_POST["x-claims-token"])) {
-    $claims_token = $_POST["x-claims-token"];
+if (!isset($_GET["id"]) || !isset($_POST["Authorization"]) || !isset($_POST["x-claims-token"])) {
+    var_dump($_GET["id"]);
+    var_dump($_POST["Authorization"]);
+    var_dump($_POST["x-claims-token"]);
+    die();
 }
 
 

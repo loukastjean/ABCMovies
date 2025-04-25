@@ -14,30 +14,19 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.htm
   </head>
   <body>
     <?php echo $header ?>
-    <main>
-      <div class="flex-row-a">
-        <div class="register-background">
-          <div class="flex-column">
-            <span class="create-account-heading">Création d’un compte</span>
-            <span class="username-input">Nom d’utilisateur</span>
-            <div class="username-bar">
-              <input type="email" class="username-input" />
-            </div>
-            <span class="email-input">Courriel</span>
-            <div class="email-bar">
-              <input type="email" class="email-input" />
-            </div>
-            <span class="password-input">Mot de passe</span>
-            <div class="password-bar">
-              <input class="password-input" />
-            </div>
-            <button class="enregistrer">
-              <span class="enregistrer-text">Enregistrer</span>
-            </button>
-          </div>
+    <main class="center-div">
+      <form action="./register.redirect.php" method="post" class="register-login-container">
+        <span class="register-login-title">Création d’un compte</span>
+        <span class="register-login-input-title">Nom d’utilisateur :</span>
+        <div class="register-login-input-container">
+          <input type="text" class="register-login-input" id="username-input" name="username"/>
         </div>
-      </div>
-      </div>
+        <span class="register-login-input-title">Mot de passe :</span>
+        <div class="register-login-input-container">
+          <input type="password" class="register-login-input" id="password-input" name="password"/>
+        </div>
+        <button type="submit" class="register-login-button">S'enregistrer</button>
+      </form>
     </main>
   </body>
 </html>

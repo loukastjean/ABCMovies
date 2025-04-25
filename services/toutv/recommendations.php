@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+header('Content-type: application/json');
 
 $show_type = $_GET["category"];
 

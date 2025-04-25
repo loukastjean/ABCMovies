@@ -1,4 +1,6 @@
 
+// Serie: Stat
+// Film: Les Cyclades
 
 
 function verifyUsername(e) {
@@ -74,7 +76,7 @@ function manageSubmitButton(enable) {
     }
 }
 
-async function placeVideos(service, contentType) {
+async function placeVideos(service, contentType, amountOfVideos = 4) {
 
     categoriesParent = document.getElementsByTagName("main");
     categoriesParentEl = categoriesParent[0];
@@ -87,12 +89,12 @@ async function placeVideos(service, contentType) {
     
     recommendations = await fetchJSON(url);
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < amountOfVideos; i++) {
         let recommendationInfo = await getInfo(service, "show", recommendations[i]["id"]);
 
         let episode = recommendationInfo["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
 
-        console.log(categoryEl);
+        console.log(episode);
 
         await createMedia(categoryEl, service, episode["id"], episode["title"], episode["description"], episode["image"]);
     }
@@ -106,6 +108,7 @@ async function fetchJSON(url, data) {
             // NON NON NON NON POURQUOIIIIIIIIIIIIIII
             body: new URLSearchParams(data),
             headers: {
+                "Accept": "application/json",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
         }).then(response => response.json());
@@ -152,10 +155,9 @@ async function fetchVideo(service, id) {
     console.log(episode);
 
     let downloadOutput = await download(service, episode["id"], tokens);
+    console.log(downloadOutput);
 
     let playlistPath = downloadOutput["output"];
-
-    console.log(downloadOutput);
 
     return playlistPath;
 }
@@ -173,14 +175,15 @@ async function createCategory(parentEl, service, contentType) {
     let categoryNameEl = document.createElement("span");
 
     categoryNameEl.setAttribute("class", `category-name`);
-    categoryNameEl.setAttribute("id", `${service}-${contentType}`);
     categoryNameEl.textContent = `${contentType} ${service}`;
+
+    parentEl.appendChild(categoryNameEl);
 
     let categoryEl = document.createElement("div");
 
     categoryEl.setAttribute("class", "category-background");
+    categoryEl.setAttribute("id", `${service}-${contentType}`);
 
-    parentEl.appendChild(categoryNameEl);
     parentEl.appendChild(categoryEl);
 }
 
@@ -192,7 +195,7 @@ async function createMedia(parentEl, service, id, title, description, background
 
     let mediaLinkEl = document.createElement("a");
 
-    mediaLinkEl.setAttribute("href", `./video.php?service=${service}&id=${id}`) // OK, DEMANDER A CLAUDE POUR LIENS QUI SONT GERNE DYNAMIQUE PAR RAPPORT A SA POSITION
+    mediaLinkEl.setAttribute("href", `./video.php?service=${service}&id=${id}`)
     mediaLinkEl.setAttribute("class", "picture-related")
     mediaLinkEl.setAttribute("style", `background: url('${backgroundUrl}')`)
 
@@ -229,4 +232,5 @@ async function createMedia(parentEl, service, id, title, description, background
 
     parentEl.appendChild(mediaGroupEl);
 }
+
 

@@ -26,5 +26,8 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.htm
 
 <script>
 
+placeVideos("toutv", "film");
+placeVideos("toutv", "documentaire");
 placeVideos("toutv", "serie");
+
 </script>
