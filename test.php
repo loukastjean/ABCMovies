@@ -9,15 +9,17 @@
 </head>
 
 <body>
-    <div class="flexgroup">
-        <div class="image">
-            <img src="./images/smoothie-cafe.jpg" alt="AAAAAAAAAAAAAAAAAAAAAAAAAA">
+        <div class="media-group">
+            <a href="./video.php?service=toutv&amp;id=978488" class="picture-related" style="background: url('https://images.tou.tv/v1/synps-src/episode/perso/src_legrandsaut_s01e01_thumbnail_v01.jpg?impolicy=ott&amp;im=Resize=(_Size_)&amp;quality=75')">
+                <div class="liked">
+                    <div class="heart"></div>
+                </div>
+                <div class="media-text-background"></div>
+                <span class="lorem-ipsum-dolor">Après sa carrière olympique en ski acrobatique, Justine Dufour-Lapointe se tourne vers le freeride (ski hors-piste). Ce sport l’oblige à repenser sa pratique, mais il lui offre une liberté nouvelle.</span>
+            </a>
+            <span class="lorem-ipsum">1. Sauter dans le vide</span>
         </div>
-        <div class="image">
-            <img src="./images/smoothie-cafe.jpg" alt="BBBBBBBBBBBBBBBBBB">
-        </div>
-    </div>
-</body>
+    </body>
 </html>
 
 <style>

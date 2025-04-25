@@ -1,18 +1,23 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-$users = array(1=>array("username"=>"louka","password"=>"12345"),2=>array("username"=>"miguel","password"=>"wow"));
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css"/>
+</head>
 
-$homePage = "https://st-jean.h25.techinfo420.ca/";
-$loginPage = "https://st-jean.h25.techinfo420.ca/login.php";
-
-$username = $_POST["username"];
-$password = $_POST["password"];
-
-foreach ($users as $key => $value) {
-    if ($username == $value["username"] && $password == $value["password"]) {
-        header("Location: ".$homePage);
-        die();
-    }
-}
-
-header("Location: ".$loginPage."?userFailedLogin=true");
+<body>
+    <div class="media-group">
+        <a href="./video.php?service=toutv&amp;id=978488" class="picture-related" style="background: url('https://images.tou.tv/v1/synps-src/episode/perso/src_legrandsaut_s01e01_thumbnail_v01.jpg?impolicy=ott&amp;im=Resize=(_Size_)&amp;quality=75')">
+            <div class="liked">
+                <div class="heart"></div>
+            </div>
+            <div class="media-text-background"></div>
+            <span class="lorem-ipsum-dolor">Après sa carrière olympique en ski acrobatique, Justine Dufour-Lapointe se tourne vers le freeride (ski hors-piste). Ce sport l’oblige à repenser sa pratique, mais il lui offre une liberté nouvelle.</span>
+        </a>
+        <span class="lorem-ipsum">1. Sauter dans le vide</span>
+    </div>
+</body>
+</html>

@@ -89,15 +89,17 @@ async function placeVideos(service, contentType, amountOfVideos = 4) {
     
     recommendations = await fetchJSON(url);
 
-    for (let i = 0; i < amountOfVideos; i++) {
-        let recommendationInfo = await getInfo(service, "show", recommendations[i]["id"]);
+    recommendations.slice(0, amountOfVideos).forEach(async recommendation => {
+        
+        let recommendationInfo = await getInfo(service, "show", recommendation["id"]);
 
+        console.log(recommendationInfo);
+        
         let episode = recommendationInfo["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
 
-        console.log(episode);
-
         await createMedia(categoryEl, service, episode["id"], episode["title"], episode["description"], episode["image"]);
-    }
+
+    });
 }
 
 async function fetchJSON(url, data) {
@@ -197,6 +199,8 @@ async function createMedia(parentEl, service, id, title, description, background
 
     mediaLinkEl.setAttribute("href", `./video.php?service=${service}&id=${id}`)
     mediaLinkEl.setAttribute("class", "picture-related")
+
+    backgroundUrl = backgroundUrl.replace("_Size_", "384");
     mediaLinkEl.setAttribute("style", `background: url('${backgroundUrl}')`)
 
     let likedEl = document.createElement("div");
