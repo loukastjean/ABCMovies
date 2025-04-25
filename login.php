@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__."/classes/session.include.php";
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
+ResumeSession("logged");
 ?>
 
 <!DOCTYPE html>

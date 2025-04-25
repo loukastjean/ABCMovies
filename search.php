@@ -1,13 +1,15 @@
 <?php
 declare(strict_types=1);
-include_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/search.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/search.php';
+require_once __DIR__."/classes/session.include.php";
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
+
+ResumeSession("logged");
 
 $query = $_GET["query"];
 
 $toutv_shows = get_search_results($query)
-
 ?>
 
 

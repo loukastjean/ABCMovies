@@ -68,7 +68,8 @@ function ResumeSession($session_name) {
     session_start();
     if (!VerifySession()) {
         DeleteSession($session_name);
-        header("Location: index.php");
+        return false;
     }
+    return true;
 }
 

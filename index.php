@@ -1,7 +1,12 @@
 <?php
+require_once __DIR__."/classes/session.include.php";
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
+$username = "";
 
+if (ResumeSession("logged")) {
+    $username = " ".$_SESSION["username"];
+}
 ?>
 
 
@@ -19,7 +24,7 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.htm
   <body>
     <?php echo $header ?>
     <main>
-      <span class="welcome-message">Bienvenue sur ABCMovies! ($username)!</span>
+      <?php echo "<span class=\"welcome-message\">Bienvenue sur ABCMovies$username!</span>"?>
     </main>
   </body>
 </html>

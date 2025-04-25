@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__."/classes/session.include.php";
-ResumeSession("auth");
+if (!ResumeSession("auth")) {
+    header("Location: login.php");
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
