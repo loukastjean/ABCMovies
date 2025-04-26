@@ -248,7 +248,7 @@ nav {
   position: relative;
   width: 37px;
   height: 37px;
-  background: url("../images/heart.svg") no-repeat center;
+  background: no-repeat center;
   background-size: cover;
 }
 

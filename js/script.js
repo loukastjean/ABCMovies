@@ -109,8 +109,6 @@ async function placeVideos(parentEl, videos, service) {
     videos.forEach(async video => {
         
         let videoInfo = await getInfo(service, "show", video["id"]);
-
-        console.log(videoInfo);
         
         let episode = videoInfo["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
 
@@ -139,17 +137,17 @@ async function setPageTitle(episodeTitle) {
 }
 
 async function getInfo(service, infoType, id) {
-    data = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/info.php?type=${infoType}&id=${id}`, null);
+    data = await fetchJSON(`services/${service}/info.php?type=${infoType}&id=${id}`, null);
     return data;
 }
 
 async function login(service, availability) {
-    tokens = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/login.php?availability=${availability}`, null);
+    tokens = await fetchJSON(`services/${service}/login.php?availability=${availability}`, null);
     return tokens;
 }
 
 async function download(service, id, tokens) {
-    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php?id=${id}`, tokens);
+    let commandOutput = await fetchJSON(`services/${service}/download.php?id=${id}`, tokens);
     return commandOutput;
 }
 
@@ -177,11 +175,48 @@ async function fetchVideo(service, id) {
 
 async function getVideoInfo(id) {
 
-    let commandOutput = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
+    let commandOutput = await fetchJSON(`services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
     return commandOutput;
-
 }
 
+async function addLiked(heartEl, service, id) {
+
+    let commandOutput = await fetchJSON(`like.php?id=${id}&service=${service}`, null);
+
+    if (!commandOutput["success"]) {
+        return;
+    }
+
+    heartEl.setAttribute("src", "images/heart.svg");
+    heartEl.setAttribute("onclick", `removeLiked(this,'${service}','${id}')`);
+}
+
+async function removeLiked(heartEl, service, id) {
+
+    let commandOutput = await fetchJSON(`like.php?id=${id}&service=${service}&remove`, null);
+
+    if (!commandOutput["success"]) {
+        return;
+    }
+
+    heartEl.setAttribute("src", "images/no-heart.svg");
+    heartEl.setAttribute("onclick", `addLiked(this,'${service}','${id}')`);
+}
+
+async function verifyLiked(heartEl, service, id) {
+
+    let commandOutput = await fetchJSON(`like.php?id=${id}&service=${service}&verify`, null);
+
+    if (!commandOutput["liked"]) {
+        console.log(commandOutput)
+        heartEl.setAttribute("src", "images/no-heart.svg");
+        heartEl.setAttribute("onclick", `addLiked(this,'${service}','${id}')`);
+        return;
+    }
+
+    heartEl.setAttribute("src", "images/heart.svg");
+    heartEl.setAttribute("onclick", `removeLiked(this,'${service}','${id}')`);
+}
 
 async function createCategory(parentEl, service, contentType) {
 
@@ -217,9 +252,11 @@ async function createMedia(parentEl, service, id, title, description, background
 
     likedEl.setAttribute("class", "liked");
 
-    let heartEl = document.createElement("div");
+    let heartEl = document.createElement("img");
 
     heartEl.setAttribute("class", "heart");
+
+    await verifyLiked(heartEl, service, id);
 
     let mediaTextBackgroundEl = document.createElement("div");
 
