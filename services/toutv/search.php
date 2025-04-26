@@ -7,7 +7,7 @@ $query = $_GET["q"];
 $shows = array();
 
 $ch = curl_init(
-    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=$query"
+    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=".urlencode($query)
 );
 
 curl_setopt_array($ch, [
