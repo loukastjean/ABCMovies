@@ -76,7 +76,7 @@ function manageSubmitButton(enable) {
     }
 }
 
-async function placeVideos(service, contentType, amountOfVideos = 4) {
+async function placeRecommendedVideos(service, contentType, amountOfVideos = 8) {
 
     categoriesParent = document.getElementsByTagName("main");
     categoriesParentEl = categoriesParent[0];
@@ -85,20 +85,36 @@ async function placeVideos(service, contentType, amountOfVideos = 4) {
 
     let categoryEl = document.getElementById(`${service}-${contentType}`);
 
-    url = `https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/recommendations.php?category=${contentType}`;
+    url = `https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/recommendations.php?category=${contentType}&amount=${amountOfVideos}`;
     
     recommendations = await fetchJSON(url);
 
-    recommendations.slice(0, amountOfVideos).forEach(async recommendation => {
+    placeVideos(categoryEl, recommendations.slice(0, amountOfVideos), service);
+}
+
+async function placeSearchVideos(query, service, amountOfVideos = 24) {
+
+    mainEl = document.getElementsByClassName("category-background");
+    mainEl = mainEl[0];
+
+    url = `https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/search.php?q=${query}&amount=${amountOfVideos}`;
+    
+    results = await fetchJSON(url);
+
+    placeVideos(mainEl, results.slice(0, amountOfVideos), service);
+}
+
+async function placeVideos(parentEl, videos, service) {
+
+    videos.forEach(async video => {
         
-        let recommendationInfo = await getInfo(service, "show", recommendation["id"]);
+        let videoInfo = await getInfo(service, "show", video["id"]);
 
-        console.log(recommendationInfo);
+        console.log(videoInfo);
         
-        let episode = recommendationInfo["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
+        let episode = videoInfo["seasons"][0]["episodes"][0]; // Pour l'instant, vraiment mauvaise maniere de faire :)
 
-        await createMedia(categoryEl, service, episode["id"], episode["title"], episode["description"], episode["image"]);
-
+        await createMedia(parentEl, service, episode["id"], videoInfo["title"], episode["description"], episode["image"]);
     });
 }
 
@@ -108,11 +124,7 @@ async function fetchJSON(url, data) {
         return await fetch(url, {
             method: "POST",
             // NON NON NON NON POURQUOIIIIIIIIIIIIIII
-            body: new URLSearchParams(data),
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
+            body: new URLSearchParams(data)
         }).then(response => response.json());
 
     } else {
@@ -129,7 +141,6 @@ async function setPageTitle(episodeTitle) {
 async function getInfo(service, infoType, id) {
     data = await fetchJSON(`https://st-jean.h25.techinfo420.ca/ABCMovies/services/${service}/info.php?type=${infoType}&id=${id}`, null);
     return data;
-
 }
 
 async function login(service, availability) {
@@ -195,9 +206,8 @@ async function createMedia(parentEl, service, id, title, description, background
 
     mediaGroupEl.setAttribute("class", "media-group");
 
-    let mediaLinkEl = document.createElement("a");
+    let mediaLinkEl = document.createElement("div");
 
-    mediaLinkEl.setAttribute("href", `./video.php?service=${service}&id=${id}`)
     mediaLinkEl.setAttribute("class", "picture-related")
 
     backgroundUrl = backgroundUrl.replace("_Size_", "384");
@@ -217,19 +227,21 @@ async function createMedia(parentEl, service, id, title, description, background
 
     let descriptionEl = document.createElement("span");
 
-    descriptionEl.setAttribute("class", "lorem-ipsum-dolor");
+    descriptionEl.setAttribute("class", "media-text-description");
     descriptionEl.textContent = description;
 
-    let titleEl = document.createElement("span");
+    let titleEl = document.createElement("a");
 
-    titleEl.setAttribute("class", "lorem-ipsum");
+    titleEl.setAttribute("class", "media-text-title");
+    titleEl.setAttribute("href", `./video.php?service=${service}&id=${id}`)
     titleEl.textContent = title;
 
     likedEl.appendChild(heartEl);
 
-    mediaLinkEl.appendChild(likedEl);
+    mediaTextBackgroundEl.appendChild(descriptionEl);
+    mediaTextBackgroundEl.appendChild(likedEl);
+    
     mediaLinkEl.appendChild(mediaTextBackgroundEl);
-    mediaLinkEl.appendChild(descriptionEl);
 
     mediaGroupEl.appendChild(mediaLinkEl);
     mediaGroupEl.appendChild(titleEl);

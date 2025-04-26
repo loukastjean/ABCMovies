@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
-require_once $_SERVER['DOCUMENT_ROOT'].'/ABCMovies/services/toutv/search.php';
 require_once __DIR__."/classes/session.include.php";
 
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
 ResumeSession("logged");
 
-$query = $_GET["query"];
+$query;
 
-$toutv_shows = get_search_results($query)
+if (isset($_GET["q"])) {
+  $query = $_GET["q"];
+}
 ?>
 
 
@@ -21,21 +22,26 @@ $toutv_shows = get_search_results($query)
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ABCMovies</title>
     <link rel="stylesheet" href="./css/style.css"/>
+    <script type="text/javascript" src="./js/script.js"></script>
   </head>
   <body>
     <?php
     echo $header;
     ?>
     <main>
-    <?php
-    echo "<br/>";
-    
-    foreach ($toutv_shows as $i => $show) {
-        echo "<p>Title: ".$show->title."</p>";
-        echo "<p>URL: ".$show->id."</p>";
-        echo "<p>Type: ".$show->type."</p>";
-    }
-    ?>
+      <div class="category-background search-background">
+
+      </div>
     </main>
   </body>
 </html>
+
+<script>
+<?php 
+if (isset($query)){
+  echo "placeSearchVideos(\"$query\", \"toutv\")";
+}
+?>
+
+
+</script>

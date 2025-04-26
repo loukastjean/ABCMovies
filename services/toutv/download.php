@@ -2,10 +2,6 @@
 declare(strict_types=1);
 header('Content-type: application/json');
 
-$id;
-
-$authorization_token;
-$claims_token;
 
 if (!isset($_GET["id"]) || !isset($_POST["Authorization"]) || !isset($_POST["x-claims-token"])) {
     var_dump($_GET["id"]);
@@ -14,6 +10,9 @@ if (!isset($_GET["id"]) || !isset($_POST["Authorization"]) || !isset($_POST["x-c
     die();
 }
 
+$id = $_GET["id"];
+$authorization_token = $_POST["Authorization"];
+$claims_token = $_POST["x-claims-token"];
 
 
 $headers = [
@@ -43,7 +42,7 @@ $resp = json_decode($str_response, true);
 
 if (!isset($resp["url"])) {
     error_log("Could not access $str_response on media id " . $id);
-    error_log("The headers were :" . json_encode($login_headers));
+    error_log("The headers were :" . json_encode(value: $headers));
     return;
 }
 

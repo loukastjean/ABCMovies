@@ -31,8 +31,8 @@ if (ResumeSession("logged")) {
 
 <script>
 
-placeVideos("toutv", "film");
-placeVideos("toutv", "documentaire");
-placeVideos("toutv", "serie");
+placeRecommendedVideos("toutv", "film");
+placeRecommendedVideos("toutv", "documentaire");
+placeRecommendedVideos("toutv", "serie");
 
 </script>

@@ -61,6 +61,11 @@ nav {
   background-size: cover;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .center-div {
   display: flex;
   align-items: center;
@@ -184,10 +189,9 @@ nav {
 }
 
 .category-name {
-  position: relative;
-  height: 17px;
   margin-left: 45px;
-  color: #ffffff;
+  margin-top: 50px;
+  color: white;
   font-size: 24px;
   font-weight: 800;
 }
@@ -208,8 +212,22 @@ nav {
   background-size: cover;
 }
 
+.picture-related:hover > .media-text-background {
+  opacity: 1;
+}
 .picture-related:hover {
-  
+  background-color: aqua;
+}
+
+.media-text-background {
+  width: 100%;
+  height: 100%;
+  background: -moz-linear-gradient(top, #3511388e, #351138);
+  background: -webkit-linear-gradient(top, #3511388e, #351138);
+  background: linear-gradient(to bottom, #3511388e, #351138);
+  opacity: 0;
+  display: flex;
+  flex-direction: row;
 }
 
 .liked {
@@ -219,7 +237,7 @@ nav {
   position: relative;
   width: 44px;
   height: 44px;
-  margin-left: calc(100% - 50px);
+  /*margin-left: calc(100% - 44px);*/
   padding: 3px 3px 3px 3px;
   background: #351138;
   border-radius: 999px;
@@ -234,8 +252,19 @@ nav {
   background-size: cover;
 }
 
-.media-text-background {
-  
+.media-text-description {
+  margin: 10px;
+  display: flex;
+  align-items: end;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.media-text-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 /* REGISTER / LOGIN STYLE */
@@ -318,4 +347,16 @@ nav {
   top: 50%;
   left: 50%;
   margin: -100px 0 0 -150px;
+}
+
+
+/* SEARCH */
+/* SEARCH */
+/* SEARCH */
+/* SEARCH */
+/* SEARCH */
+/* SEARCH */
+
+.search-background {
+  margin-top: 100px;
 }
