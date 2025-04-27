@@ -2,12 +2,16 @@
 declare(strict_types=1);
 header('Content-type: application/json');
 
-$query = $_GET["q"];
+if (!isset($_GET["q"])) {
+    echo json_encode(["error" => "No query found"]);
+    die();
+}
+$query = urlencode($_GET["q"]);
 
 $shows = array();
 
 $ch = curl_init(
-    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=".urlencode($query)
+    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=".$query
 );
 
 curl_setopt_array($ch, [

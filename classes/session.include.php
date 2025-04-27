@@ -70,6 +70,7 @@ function ResumeSession($session_name) {
         DeleteSession($session_name);
         return false;
     }
+    $_SESSION["time"] = time();
     return true;
 }
 

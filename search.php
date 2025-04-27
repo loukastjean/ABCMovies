@@ -6,11 +6,12 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.htm
 
 ResumeSession("logged");
 
-$query;
+$query = "";
 
 if (isset($_GET["q"])) {
-  $query = $_GET["q"];
+    $query .= $_GET["q"];
 }
+
 ?>
 
 
@@ -37,10 +38,20 @@ if (isset($_GET["q"])) {
 </html>
 
 <script>
-<?php 
-if (isset($query)){
-  echo "placeSearchVideos(\"$query\", \"toutv\")";
+
+if ("<?php echo $query ?>" != "") {
+    document.getElementById("search-bar").value = "<?php echo $query ?>"
 }
+
+
+<?php
+
+
+if ($query == "") {
+    $query = "*";
+}
+
+echo "placeSearchVideos(\"$query\", \"toutv\")";
 ?>
 
 
