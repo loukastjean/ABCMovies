@@ -135,7 +135,7 @@ function Episode($id): string
 
     $episode["contains_drm"] = (bool)$resp["Metas"]["isDrmActive"];
 
-    if ((bool)$resp["Metas"]["IsFree"]) {
+    if (filter_var($resp["Metas"]["IsFree"], FILTER_VALIDATE_BOOLEAN)) {
         $episode["availability"] = "free";
     }
     else {
