@@ -28,7 +28,9 @@ $id = $_GET["id"];
   <body>
     <?php echo $header ?>
     <main>
-      <video id="my-player" class="video-js"></video>
+      <div class="flex-center-parent">
+        <video id="my-player" class="video-js"></video>
+      </div>
     </main>
   </body>
 </html>
@@ -43,6 +45,8 @@ let player = videojs("my-player", {
     preload: "auto",
 });
 
+myPlayerEl = document.getElementById("my-player");
+
 let hasSource = false;
 
 let service = "<?php echo $service; ?>";
@@ -51,6 +55,7 @@ let id = "<?php echo $id; ?>";
 
 async function isVideoDownloaded() {
     if (await videoSrc && !hasSource) {
+        myPlayerEl.setAttribute("style", `background: #000`);
         hasSource = true;
         player.src({
           src: await videoSrc,
@@ -66,6 +71,6 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 
-setInterval(isVideoDownloaded, 2000, service, id);
+setInterval(isVideoDownloaded, 4000, service, id);
 
 </script>

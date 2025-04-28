@@ -338,17 +338,27 @@ nav {
   transition-duration: 1s;
 }
 
-
-
 /* VIDEO PLAYER */
 
+.flex-center-parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .video-js {
-  position: absolute;
-  width: 300px;
-  height: 200px;
-  top: 50%;
-  left: 50%;
-  margin: -100px 0 0 -150px;
+  margin-top: 50px;
+  width: 70vw;
+  height: 39.375vw; /* height:width ratio = 9/16 = .5625  */
+  max-height: 100vh;
+  max-width: 177.78vh; /* 16/9 = 1.778 */
+  aspect-ratio: 16 / 9;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 
