@@ -28,7 +28,7 @@ if (isset($_GET["q"])) {
   <body>
     <?php
     echo $header;
-    ?>
+?>
     <main>
       <div class="category-background search-background">
 

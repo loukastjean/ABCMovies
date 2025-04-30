@@ -1,11 +1,11 @@
 <?php
+
 require_once __DIR__."/classes/db.include.php";
 
 
-if (!empty($_POST["username"]) && !empty($_POST["password"])) 
-{
-    $username = filter_input(INPUT_POST,"username",FILTER_VALIDATE_EMAIL); // Futur: FILTER_DEFAULT
-    $password = filter_input(INPUT_POST,"password",FILTER_DEFAULT);
+if (!empty($_POST["username"]) && !empty($_POST["password"])) {
+    $username = filter_input(INPUT_POST, "username", FILTER_VALIDATE_EMAIL); // Futur: FILTER_DEFAULT
+    $password = filter_input(INPUT_POST, "password", FILTER_DEFAULT);
 
     //Faire une sélect sur la bd pour trouver le username
     //Le username existe pour l"exemple
@@ -16,7 +16,7 @@ if (!empty($_POST["username"]) && !empty($_POST["password"]))
     if (!$user) {
         CreateUser($username, password_hash($password, PASSWORD_DEFAULT));
 
-        require_once __DIR__."/classes/session.include.php";
+        include_once __DIR__."/classes/session.include.php";
 
         CreateSession("logged");
 

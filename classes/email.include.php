@@ -1,14 +1,16 @@
 <?php
 
-function SendEmail($email, $subject, $message) {
+function SendEmail($email, $subject, $message)
+{
 
     $headers = ["From" => "stjeanh25techinf@st-jean.h25.techinfo420.ca", "X-Mailer" => "PHP/".phpversion()];
 
     mail($email, $subject, $message, $headers);
 }
 
-function SendVerificationCode($email) {
-    $code = rand(100000,999999);
+function SendVerificationCode($email)
+{
+    $code = rand(100000, 999999);
 
     session_start();
 

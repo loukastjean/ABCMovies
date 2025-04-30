@@ -1,9 +1,11 @@
 <?php
+
 require_once __DIR__ . "/classes/session.include.php";
 require_once __DIR__ . "/classes/db.include.php";
 
 // Fonction d'envoi de réponse JSON
-function sendJson(array $data) {
+function sendJson(array $data)
+{
     header('Content-Type: application/json');
     echo json_encode($data);
     die();

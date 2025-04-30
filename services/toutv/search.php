@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 header('Content-type: application/json');
 
@@ -14,10 +15,13 @@ $ch = curl_init(
     "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=".$query
 );
 
-curl_setopt_array($ch, [
+curl_setopt_array(
+    $ch,
+    [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HEADER => false,
-]);
+    ]
+);
 
 $str_response = curl_exec($ch);
 
@@ -27,8 +31,8 @@ curl_close($ch);
 
 foreach ($resp["result"] as $_ => $s) {
 
-    # Si le contenu est un show (emission sans vrai sens aux episodes)
-    # ou Season (emission avec un ordre, genre grey's anatomy)
+    // Si le contenu est un show (emission sans vrai sens aux episodes)
+    // ou Season (emission avec un ordre, genre grey's anatomy)
     if (!in_array($s["type"], ["Show", "Season"])) {
         continue;
     }

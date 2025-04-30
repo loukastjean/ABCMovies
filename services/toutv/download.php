@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 header('Content-type: application/json');
 
@@ -25,11 +26,14 @@ $ch = curl_init(
     "https://services.radio-canada.ca/media/validation/v2/?output=json&appCode=toutv&tech=dash&idMedia=".$id
 );
 
-curl_setopt_array($ch, [
+curl_setopt_array(
+    $ch,
+    [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HEADER => false,
     CURLOPT_HTTPHEADER => $headers,
-]);
+    ]
+);
 
 $str_response = curl_exec($ch);
 

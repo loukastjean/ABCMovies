@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 header('Content-type: application/json');
 
@@ -46,10 +47,13 @@ function Show($id): string
             "?device=web"
     );
 
-    curl_setopt_array($ch, [
+    curl_setopt_array(
+        $ch,
+        [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADER => false,
-    ]);
+        ]
+    );
 
     $str_response = curl_exec($ch);
 
@@ -112,10 +116,13 @@ function Episode($id): string
             $id
     );
 
-    curl_setopt_array($ch, [
+    curl_setopt_array(
+        $ch,
+        [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADER => false,
-    ]);
+        ]
+    );
 
     $str_response = curl_exec($ch);
 
@@ -137,9 +144,8 @@ function Episode($id): string
 
     if (filter_var($resp["Metas"]["IsFree"], FILTER_VALIDATE_BOOLEAN)) {
         $episode["availability"] = "free";
-    }
-    else {
-        # Faux, je ne sais pas si c'est Member ou premium, mais je peux pas savoir :(
+    } else {
+        // Faux, je ne sais pas si c'est Member ou premium, mais je peux pas savoir :(
         $episode["availability"] = "paid";
     }
 

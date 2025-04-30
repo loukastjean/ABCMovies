@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 header('Content-type: application/json');
 
@@ -34,10 +35,13 @@ if ($show_type == "info") {
     );
 }
 
-curl_setopt_array($ch, [
+curl_setopt_array(
+    $ch,
+    [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HEADER => false,
-]);
+    ]
+);
 
 $str_response = curl_exec($ch);
 
@@ -59,12 +63,12 @@ if ($show_type == "info") {
 
         $show["availability"] = get_availability_type($s["tier"]);
 
-        # Il va falloir fixer ca, mais pour l'instant les media c'est trop chiant
+        // Il va falloir fixer ca, mais pour l'instant les media c'est trop chiant
         if ($show["type"] == "Regular") {
             continue;
         }
 
-        # Ceci n'est pas tres beau. Il faut trouver une meilleure maniere de supporter info
+        // Ceci n'est pas tres beau. Il faut trouver une meilleure maniere de supporter info
         if ($show["type"] == "Episodic") {
             $show["type"] = "Series";
         }

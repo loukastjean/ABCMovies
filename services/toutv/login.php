@@ -1,4 +1,5 @@
 <?php
+
 header('Content-type: application/json');
 
 $availability = "free";
