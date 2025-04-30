@@ -4,6 +4,7 @@ require_once __DIR__."/classes/session.include.php";
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 $username = "";
 
+// Set le username dans le Bienvenue sur ABCMovies
 if (ResumeSession("logged")) {
     $username = " ".$_SESSION["username"];
 }
@@ -31,6 +32,7 @@ if (ResumeSession("logged")) {
 
 <script>
 
+// Charge des vidéos recommandées pour différents types de contenu (films, documentaires, séries, etc...)
 placeRecommendedVideos("toutv", "film");
 placeRecommendedVideos("toutv", "documentaire");
 placeRecommendedVideos("toutv", "serie");

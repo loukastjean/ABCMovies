@@ -1,25 +1,29 @@
 <?php
 
 declare(strict_types=1);
+
 header('Content-type: application/json');
 
 if (!isset($_GET["q"])) {
-    echo json_encode(["error" => "No query found"]);
+    echo json_encode(["error" => "Aucune requête trouvée (?q)"]);
     die();
 }
+
+// Encode le paramètre de requête pour pouvoir faire la requête a TOU.TV
 $query = urlencode($_GET["q"]);
 
 $shows = array();
 
+// Faire une recherche à l'aide de l'API de TOU.TV
 $ch = curl_init(
-    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=".$query
+    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=" . $query
 );
 
 curl_setopt_array(
     $ch,
     [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HEADER => false,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => false,
     ]
 );
 
@@ -29,12 +33,13 @@ $resp = json_decode($str_response, true);
 
 curl_close($ch);
 
+// Parcourt chaque résultat de recherche
 foreach ($resp["result"] as $_ => $s) {
 
-    // Si le contenu est un show (emission sans vrai sens aux episodes)
-    // ou Season (emission avec un ordre, genre grey's anatomy)
+    // On ne garde que les éléments de type "Show" (émissions sans ordre particulier)
+    // ou "Season" (séries avec une structure d'épisodes, ex : Grey’s Anatomy)
     if (!in_array($s["type"], ["Show", "Season"])) {
-        continue;
+        continue; // Ignore les types non pertinents
     }
 
     $show = array();
