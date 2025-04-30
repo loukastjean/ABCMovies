@@ -215,9 +215,6 @@ nav {
 .picture-related:hover > .media-text-background {
   opacity: 1;
 }
-.picture-related:hover {
-  background-color: aqua;
-}
 
 .media-text-background {
   width: 100%;
