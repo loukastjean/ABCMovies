@@ -14,8 +14,8 @@ function SendVerificationCode($email) {
 
     $_SESSION["code"] = $code;
 
-    $subject = "Code de verification";
-    $message = "Votre code de securite ABCMovies est: ".$code.". Attention, ce code est tres important! Ne le divulgez a personne.";
+    $subject = "Code de vérification ABCMovies";
+    $message = "Votre code de sécurité ABCMovies est: ".$code.". Attention, ce code est très important! Ne le divulgez à personne.";
 
     SendEmail($email, $subject, $message);
 }

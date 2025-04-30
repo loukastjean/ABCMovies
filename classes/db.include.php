@@ -15,7 +15,7 @@ function SelectUserByUsername(string $username)
         return $pdoRequete->fetch(PDO::FETCH_OBJ);
 
     } catch (Exception $e) {
-        error_log("Exception pdo en Select user by username: ".$e->getMessage());
+        error_log("Exception pdo: on a tenté de sélectionner l'utilisateur ".$username.": ".$e->getMessage());
     }
 }
 
@@ -29,8 +29,11 @@ function CreateUser(string $username, string $password)
         $pdoRequete->bindParam(":password",$password,PDO::PARAM_STR);
     
         $pdoRequete->execute();
+
+        error_log($username." a été créé"); // Il faudrait plutot le log dans un fichier fait pour l'ecriture dans la DB
+
     } catch (Exception $e) {
-        error_log("Exception pdo en Create User: ".$e->getMessage());
+        error_log("Exception pdo: on a tenté de créer l'utilisateur ".$username.": ".$e->getMessage());
     }
 }
 
@@ -45,8 +48,11 @@ function RemoveLiked(string $username, string $service, string $id)
         $pdoRequete->bindParam(":id",$id,PDO::PARAM_STR);
     
         $pdoRequete->execute();
+
+        error_log($username." a unliké ".$service."-".$id); // Il faudrait plutot le log dans un fichier fait pour l'ecriture dans la DB
+
     } catch (Exception $e) {
-        error_log("Exception pdo en Remove Liked: ".$e->getMessage());
+        error_log("Exception pdo: ".$username." a tenté de unlike ".$service."-".$id.": ".$e->getMessage());
     }
 }
 
@@ -61,8 +67,11 @@ function AddLiked(string $username, string $service, string $id)
         $pdoRequete->bindParam(":id",$id,PDO::PARAM_STR);
     
         $pdoRequete->execute();
+
+        error_log($username." a liké ".$service."-".$id); // Il faudrait plutot le log dans un fichier fait pour l'ecriture dans la DB
+
     } catch (Exception $e) {
-        error_log("Exception pdo en Add Liked: ".$e->getMessage());
+        error_log("Exception pdo: ".$username." a tenté de like ".$service."-".$id.": ".$e->getMessage());
     }
 }
 
@@ -79,7 +88,7 @@ function SelectLiked(string $username)
 
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
-        error_log("Exception pdo en Select Liked: ".$e->getMessage());
+        error_log("Exception pdo: ".$username." a tenté de selectionner les vidéos likées: ".$e->getMessage());
     }
 }
 
@@ -93,7 +102,7 @@ function SelectServices()
 
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
-        error_log("Exception pdo en Select Liked: ".$e->getMessage());
+        error_log("Exception pdo: tentative de selectionner les services: ".$e->getMessage());
     }
 }
 
@@ -108,8 +117,11 @@ function AddVideo(int $service, string $id)
         $pdoRequete->bindParam(":id",$id,PDO::PARAM_STR);
     
         $pdoRequete->execute();
+
+        error_log("Ajouté vidéo avec ID ".$id." sur ".$service); // Il faudrait plutot le log dans un fichier fait pour l'ecriture dans la DB
+
     } catch (Exception $e) {
-        error_log("Exception pdo en AddVideo: ".$e->getMessage());
+        error_log("Exception pdo: tentative d'ajouter vidéo avec ID ".$id." sur ".$service.": ".$e->getMessage());
     }
 }
 
@@ -139,6 +151,6 @@ function GetConnexionBd(string $user_type)
         return new PDO($conn, BDUTILISATEUR."_".$user_type, BDPASSWORD);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: ".$e->getMessage());
+        error_log("Exception pdo: tentative de connexion sur ".BDSCHEMA.": ".$e->getMessage());
     }
 }
