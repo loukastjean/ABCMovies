@@ -25,6 +25,16 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.htm
     <main class="center-div">
         <form action="2fa.redirect.php" method="post" class="register-login-container">
             <span class="register-login-title">Validation d'identité</span>
+            <?php
+            if (isset($_GET["error"])) {
+                if ($_GET["error"] === "wrongcode") {
+                    echo "<span class=\"register-login-error\">Le code entré est erroné</span>";
+                }
+                if ($_GET["error"] === "nocode") {
+                    echo "<span class=\"register-login-error\">Le code entré est vide</span>";
+                }
+            }
+            ?>
             <span class="register-login-input-title">Code d'authentification :</span>
             <div class="register-login-input-container">
               <input type="text" class="register-login-input" name="code"/>
