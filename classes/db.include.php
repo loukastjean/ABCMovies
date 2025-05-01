@@ -19,7 +19,7 @@ function SelectUserByUsername(string $username)
         return $pdoRequete->fetch(PDO::FETCH_OBJ);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: on a tenté de sélectionner l'utilisateur ".$username.": ".$e->getMessage());
+        error_log("Exception pdo: selectuserbyusername on a tenté de sélectionner l'utilisateur ".$username.": ".$e->getMessage());
     }
 }
 
@@ -39,10 +39,10 @@ function CreateUser(string $username, string $password)
         $pdoRequete->bindParam(":password", $password, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log($username." a été créé");
+        error_log($username." a été créé\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: on a tenté de créer l'utilisateur ".$username.": ".$e->getMessage());
+        error_log("Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": ".$e->getMessage());
     }
 }
 
@@ -64,10 +64,10 @@ function RemoveLiked(string $username, string $service, string $id)
         $pdoRequete->bindParam(":id", $id, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log($username." a unliké ".$service."-".$id);
+        error_log($username." a unliké ".$service."-".$id."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: ".$username." a tenté de unlike ".$service."-".$id.": ".$e->getMessage());
+        error_log("Exception pdo: removeliked ".$username." a tenté de unlike ".$service."-".$id.": ".$e->getMessage());
     }
 }
 
@@ -89,10 +89,10 @@ function AddLiked(string $username, string $service, string $id): void
         $pdoRequete->bindParam(":id", $id, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log($username." a liké ".$service."-".$id);
+        error_log($username." a liké ".$service."-".$id."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: ".$username." a tenté de like ".$service."-".$id.": ".$e->getMessage());
+        error_log("Exception pdo: addliked ".$username." a tenté de like ".$service."-".$id.": ".$e->getMessage());
     }
 }
 
@@ -113,7 +113,7 @@ function SelectLiked(string $username)
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: ".$username." a tenté de selectionner les vidéos likées: ".$e->getMessage());
+        error_log("Exception pdo: selectliked ".$username." a tenté de selectionner les vidéos likées: ".$e->getMessage());
     }
 }
 
@@ -132,7 +132,7 @@ function SelectServices()
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: tentative de selectionner les services: ".$e->getMessage());
+        error_log("Exception pdo: selectservices tentative de selectionner les services: ".$e->getMessage());
     }
 }
 
@@ -152,10 +152,10 @@ function AddVideo(int $service, string $id): void
         $pdoRequete->bindParam(":id", $id, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log("Ajouté vidéo avec ID ".$id." sur ".$service);
+        error_log("Ajouté vidéo avec ID ".$id." sur ".$service."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: tentative d'ajouter vidéo avec ID ".$id." sur ".$service.": ".$e->getMessage());
+        error_log("Exception pdo: addvideo tentative d'ajouter vidéo avec ID ".$id." sur ".$service.": ".$e->getMessage());
     }
 }
 
@@ -174,7 +174,7 @@ function SelectVideos()
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        error_log("Exception pdo en SelectVideos: ".$e->getMessage());
+        error_log("Exception pdo: selectvideos tentative de sélectionner toutes les vidéos: ".$e->getMessage());
     }
 }
 
@@ -191,6 +191,6 @@ function GetConnexionBd(string $user_type)
         return new PDO($conn, BDUTILISATEUR."_".$user_type, BDPASSWORD);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: tentative de connexion sur ".BDSCHEMA.": ".$e->getMessage());
+        error_log("Exception pdo: getconnexionbd tentative de connexion sur ".BDSCHEMA.": ".$e->getMessage());
     }
 }

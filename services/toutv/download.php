@@ -71,8 +71,7 @@ foreach ($resp["params"] as $_ => $param) {
 // Prépare les en-têtes requis pour l’autorisation Widevine
 $mpd_headers = ["x-dt-auth-token" => $request_token];
 
-if (!isset($licence_url) || !isset($request_token))
-{
+if (!isset($licence_url) || !isset($request_token)) {
     error_log("download.php: Could not access the license URL or the Auth token on media id " . $id);
     error_log("The headers were :" . json_encode($headers));
     die();

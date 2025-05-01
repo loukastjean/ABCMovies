@@ -81,7 +81,7 @@ if ($show_type === "info") {
     }
 } else {
     // Pour les autres catégories normales (film, documentaire, etc.)
-    
+
     // Recommendations qui changent en haut de la page
     foreach ($resp["header"]["items"] as $s) {
         $shows[] = [

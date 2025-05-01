@@ -16,7 +16,7 @@ function SendEmail($email, $subject, $message)
     ];
 
     mail($email, $subject, $message, implode("\r\n", array_map(
-        fn($key, $value) => "$key: $value",
+        fn ($key, $value) => "$key: $value",
         array_keys($headers),
         $headers
     )));

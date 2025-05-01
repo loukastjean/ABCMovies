@@ -48,7 +48,7 @@ function CreateSession($session_name, $duree = 60 * 60)
     ini_set("session.cookie_httponly", 1);
     ini_set("session.cookie_secure", 1);
     ini_set("session.cookie_samesite", "Strict");
-    ini_set("session.cache_limiter", "nocache"); 
+    ini_set("session.cache_limiter", "nocache");
     ini_set("session.hash_function", "sha512");
 
     session_name($session_name);

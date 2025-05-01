@@ -7,11 +7,9 @@ $availability;
 
 // Vérifie si ?availability=paid, donc vidéo a besoin d'un compte payant
 if (isset($_GET["availability"])) {
-    if (in_array($_GET["availability"], $availabilities))
-    {
+    if (in_array($_GET["availability"], $availabilities)) {
         $availability = $_GET["availability"];
-    }
-    else {
+    } else {
         $availability = $availabilities[0];
     }
 }
