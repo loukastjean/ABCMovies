@@ -8,7 +8,7 @@ ResumeSession("auth");
 Verify2FASession();
 
 /**
- * Si un code a été soumis via POST, le traiter.
+ * Si un code a été soumis, le traiter.
  */
 if (!empty($_POST["code"])) {
 
@@ -26,14 +26,21 @@ if (!empty($_POST["code"])) {
 
         $_SESSION["username"] = $username;
 
+        error_log($_SESSION["username"]." s'est connecté\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+
         header("Location: index.php");
         die();
     } else {
+
+        error_log("Tentative de 2FA de ".$_SESSION["username"]." échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
+        
         // Code invalide → retour à la page de vérification
         header("Location: 2fa.php");
         die();
     }
 }
+
+error_log("Tentative de 2FA de ".$_SESSION["username"]." échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 /**
  * Vérifie que la session "auth" contient les éléments nécessaires pour la validation 2FA.

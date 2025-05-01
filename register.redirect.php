@@ -4,7 +4,7 @@ require_once __DIR__."/classes/db.include.php";
 include_once __DIR__."/classes/session.include.php";
 
 // Vérifie que les champs "username" et "password" sont remplis dans le formulaire
-if (!empty($_POST["username"]) && !empty($_POST["password"])) {
+if (filter_input(INPUT_POST, "username", FILTER_VALIDATE_EMAIL) && filter_input(INPUT_POST, "password", FILTER_DEFAULT)) {
     // Nettoie et valide les entrées utilisateur
     $username = filter_input(INPUT_POST, "username", FILTER_VALIDATE_EMAIL); // Peut être remplacé par FILTER_DEFAULT si ce n’est plus un email
     $password = filter_input(INPUT_POST, "password", FILTER_DEFAULT);
@@ -25,11 +25,20 @@ if (!empty($_POST["username"]) && !empty($_POST["password"])) {
 
         $_SESSION["username"] = $username;
 
+        error_log("Le compte ".$_SESSION["username"]." vient d'être créé\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+
         // Redirige vers la page d’accueil
-        header("Location: index.php?YES");
+        header("Location: index.php");
+        die();
+    } else {
+        error_log("Tentative de création de compte échouée, car compte $username existe déjà\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
+        header("Location: register.php?error=alreadyexists");
         die();
     }
+
 }
+
+error_log("Tentative de création de compte échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 // Si le formulaire est invalide ou si l'utilisateur existe déjà, on redirige vers la page d'inscription
 header("Location: register.php");

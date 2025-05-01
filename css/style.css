@@ -286,6 +286,14 @@ nav {
   font-weight: 700;
 }
 
+.register-login-error {
+  text-align: center;
+  margin-bottom: 2%;
+  color: #ac005e;
+  font-size: large;
+  font-weight: 600;
+}
+
 .register-login-input-title {
   color: #9544b0;
   font-size: x-large;

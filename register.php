@@ -4,6 +4,8 @@ require_once __DIR__."/classes/session.include.php";
 $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
 
 ResumeSession("logged");
+
+
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +21,13 @@ ResumeSession("logged");
     <main class="center-div">
       <form action="./register.redirect.php" method="post" class="register-login-container">
         <span class="register-login-title">Création d’un compte</span>
+        <?php
+        if (isset($_GET["error"])) {
+            if ($_GET["error"] === "alreadyexists") {
+                echo "<span class=\"register-login-error\">Ce nom d'utilisateur est déjà utilisé</span>";
+            }
+        } 
+        ?>
         <span class="register-login-input-title">Nom d’utilisateur :</span>
         <div class="register-login-input-container">
           <input type="text" class="register-login-input" id="username-input" name="username"/>

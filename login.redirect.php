@@ -2,7 +2,7 @@
 
 require_once __DIR__."/classes/db.include.php";
 require_once __DIR__."/classes/session.include.php";
-include_once __DIR__."/classes/email.include.php";
+require_once __DIR__."/classes/email.include.php";
 
 // Vérifie que les champs "username" et "password" ont été envoyés
 if (!empty($_POST["username"]) && !empty($_POST["password"])) {
@@ -24,11 +24,15 @@ if (!empty($_POST["username"]) && !empty($_POST["password"])) {
         // Envoie un code de vérification à l'utilisateur (email dans ce cas ci)
         SendVerificationCode($username);
 
+        error_log($_SESSION["username"]." tente de se connecter (manque le 2FA)\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+
         // Redirige vers la page de validation du code 2FA
         header("Location: 2fa.php");
         die();
     }
 }
+
+error_log("Tentative de connexion échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 // Si la validation échoue ou les champs sont vides, redirige vers la page de connexion
 header("Location: login.php");
