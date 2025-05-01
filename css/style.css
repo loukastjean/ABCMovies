@@ -139,6 +139,7 @@ nav {
   color: #ffffff;
   font-size: 25px;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .create-account {
@@ -243,6 +244,7 @@ nav {
 .heart {
   flex-shrink: 0;
   position: relative;
+  cursor: pointer;
   width: 37px;
   height: 37px;
   background: no-repeat center;
@@ -260,10 +262,24 @@ nav {
   font-weight: 600;
 }
 
+.media-text-description:hover {
+  text-decoration-line: underline;
+  text-decoration-color: white;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+}
+
 .media-text-title {
   color: white;
   font-size: 20px;
   font-weight: 600;
+}
+
+.media-text-title:hover {
+  text-decoration-line: underline;
+  text-decoration-color: white;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
 }
 
 /* REGISTER / LOGIN STYLE */

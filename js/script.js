@@ -163,8 +163,9 @@ async function createMedia(parentEl, service, id, title, description, background
     let mediaTextBackgroundEl = document.createElement("div");
     mediaTextBackgroundEl.setAttribute("class", "media-text-background");
 
-    let descriptionEl = document.createElement("span");
+    let descriptionEl = document.createElement("a");
     descriptionEl.setAttribute("class", "media-text-description");
+    descriptionEl.setAttribute("href", `/ABCMovies/video.php?service=${service}&id=${id}`);
     descriptionEl.textContent = description;
 
     let titleEl = document.createElement("a");
