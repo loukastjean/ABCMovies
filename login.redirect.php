@@ -24,7 +24,7 @@ if (!empty($_POST["username"]) && !empty($_POST["password"])) {
         // Envoie un code de vérification à l'utilisateur (email dans ce cas ci)
         SendVerificationCode($username);
 
-        error_log($_SESSION["username"]." tente de se connecter (manque le 2FA)\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+        error_log($_SESSION["username"]." tente de se connecter (avant le 2FA)\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
         // Redirige vers la page de validation du code 2FA
         header("Location: 2fa.php");
