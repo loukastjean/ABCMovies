@@ -35,4 +35,4 @@ if (!empty($_POST["username"]) && !empty($_POST["password"])) {
 error_log("Tentative de connexion échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 // Si la validation échoue ou les champs sont vides, redirige vers la page de connexion
-header("Location: login.php");
+header("Location: login.php?error=wrong");

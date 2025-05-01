@@ -351,6 +351,7 @@ nav {
   font-weight: 600;
   margin-top: 30px;
   max-width: 470px;
+  cursor: pointer;
 }
 
 .register-login-button:hover {
