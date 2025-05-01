@@ -19,7 +19,7 @@ function SelectUserByUsername(string $username)
         return $pdoRequete->fetch(PDO::FETCH_OBJ);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: selectuserbyusername on a tenté de sélectionner l'utilisateur ".$username.": ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: selectuserbyusername on a tenté de sélectionner l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -39,11 +39,11 @@ function CreateUser(string $username, string $password)
         $pdoRequete->bindParam(":password", $password, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log($username." a été créé\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] ".$username." a été créé\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": ".$e->getMessage());
-        error_log("Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": ".$e->getMessage()."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
     }
 }
 
@@ -65,10 +65,10 @@ function RemoveLiked(string $username, string $service, string $id)
         $pdoRequete->bindParam(":id", $id, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log($username." a unliké ".$service."-".$id."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] ".$username." a unliké ".$service."-".$id.": Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: removeliked ".$username." a tenté de unlike ".$service."-".$id.": ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: removeliked ".$username." a tenté de unlike ".$service."-".$id.": : Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -90,10 +90,10 @@ function AddLiked(string $username, string $service, string $id): void
         $pdoRequete->bindParam(":id", $id, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log($username." a liké ".$service."-".$id."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] ".$username." a liké ".$service."-".$id.": Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: addliked ".$username." a tenté de like ".$service."-".$id.": ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: addliked ".$username." a tenté de like ".$service."-".$id.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -114,7 +114,7 @@ function SelectLiked(string $username)
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: selectliked ".$username." a tenté de selectionner les vidéos likées: ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: selectliked ".$username." a tenté de selectionner les vidéos likées: Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -133,7 +133,7 @@ function SelectServices()
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: selectservices tentative de selectionner les services: ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: selectservices tentative de selectionner les services: Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -153,10 +153,10 @@ function AddVideo(int $service, string $id): void
         $pdoRequete->bindParam(":id", $id, PDO::PARAM_STR);
         $pdoRequete->execute();
 
-        error_log("Ajouté vidéo avec ID ".$id." sur ".$service."\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] Ajouté vidéo avec ID ".$id." sur ".$service.": Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
 
     } catch (Exception $e) {
-        error_log("Exception pdo: addvideo tentative d'ajouter vidéo avec ID ".$id." sur ".$service.": ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: addvideo tentative d'ajouter vidéo avec ID ".$id." sur ".$service.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -175,7 +175,7 @@ function SelectVideos()
         return $pdoRequete->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: selectvideos tentative de sélectionner toutes les vidéos: ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: selectvideos tentative de sélectionner toutes les vidéos: : Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -192,6 +192,6 @@ function GetConnexionBd(string $user_type)
         return new PDO($conn, BDUTILISATEUR."_".$user_type, BDPASSWORD);
 
     } catch (Exception $e) {
-        error_log("Exception pdo: getconnexionbd tentative de connexion sur ".BDSCHEMA.": ".$e->getMessage());
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: getconnexionbd tentative de connexion sur ".BDSCHEMA.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }

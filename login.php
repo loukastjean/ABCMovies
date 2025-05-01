@@ -18,14 +18,14 @@ ResumeSession("logged");
     <?php echo $header ?>
     <main class="center-div">
       <form action="./login.redirect.php" method="post" class="register-login-container">
-      <?php
+        <span class="register-login-title">Connectez vous à votre compte</span>
+        <?php
         if (isset($_GET["error"])) {
             if ($_GET["error"] === "wrong") {
-                echo "<span class=\"register-login-error\">Les informations entrées sont </span>";
+                echo "<span class=\"register-login-error\">Il y a des erreurs dans les informations entrées</span>";
             }
         } 
         ?>
-        <span class="register-login-title">Connectez vous à votre compte</span>
         <span class="register-login-input-title">Nom d’utilisateur :</span>
         <div class="register-login-input-container">
           <input type="text" class="register-login-input" id="username-input" name="username"/>

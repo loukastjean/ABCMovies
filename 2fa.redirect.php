@@ -26,13 +26,13 @@ if (!empty($_POST["code"])) {
 
         $_SESSION["username"] = $username;
 
-        error_log($_SESSION["username"]." s'est connecté\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] ".$_SESSION["username"]." s'est connecté: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
         header("Location: index.php");
         die();
     } else {
 
-        error_log("Tentative de 2FA de ".$_SESSION["username"]." échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] Tentative de 2FA de ".$_SESSION["username"]." échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
         
         // Code invalide → retour à la page de vérification
         header("Location: 2fa.php?error=wrongcode");
@@ -40,7 +40,7 @@ if (!empty($_POST["code"])) {
     }
 }
 
-error_log("Tentative de 2FA de ".$_SESSION["username"]." échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
+error_log("[".date("d/m/o H:i:s e", time())."] Tentative de 2FA de ".$_SESSION["username"]." échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 header("Location: 2fa.php?error=nocode");
 
 /**

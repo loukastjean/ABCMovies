@@ -24,7 +24,7 @@ if (!empty($_POST["username"]) && !empty($_POST["password"])) {
         // Envoie un code de vérification à l'utilisateur (email dans ce cas ci)
         SendVerificationCode($username);
 
-        error_log($_SESSION["username"]." tente de se connecter (avant le 2FA)\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
+        error_log("[".date("d/m/o H:i:s e", time())."] ".$_SESSION["username"]." tente de se connecter (avant le 2FA): Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
         // Redirige vers la page de validation du code 2FA
         header("Location: 2fa.php");
@@ -32,7 +32,7 @@ if (!empty($_POST["username"]) && !empty($_POST["password"])) {
     }
 }
 
-error_log("Tentative de connexion échouée\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
+error_log("[".date("d/m/o H:i:s e", time())."] Tentative de connexion échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 // Si la validation échoue ou les champs sont vides, redirige vers la page de connexion
 header("Location: login.php?error=wrong");
