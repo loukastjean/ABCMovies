@@ -19,7 +19,7 @@ function SelectUserByUsername(string $username)
         return $pdoRequete->fetch(PDO::FETCH_OBJ);
 
     } catch (Exception $e) {
-        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: selectuserbyusername on a tenté de sélectionner l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
+        error_log("Exception pdo: selectuserbyusername on a tenté de sélectionner l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
 }
 
@@ -42,7 +42,6 @@ function CreateUser(string $username, string $password)
         error_log("[".date("d/m/o H:i:s e", time())."] ".$username." a été créé\n", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
     } catch (Exception $e) {
-        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
         error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: createuser on a tenté de créer l'utilisateur ".$username.": Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
     }
 }

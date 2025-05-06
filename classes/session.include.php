@@ -97,14 +97,18 @@ function VerifySession(): bool
  */
 function ResumeSession($session_name)
 {
-    session_name($session_name);
-    session_start();
+    try {
+        session_name($session_name);
+        session_start();
 
-    if (!VerifySession()) {
-        DeleteSession($session_name); // Supprime la session si elle est invalide
-        return false;
+        if (!VerifySession()) {
+            DeleteSession($session_name); // Supprime la session si elle est invalide
+            return false;
+        }
+
+        $_SESSION["time"] = time(); // Met à jour le timestamp pour prolonger la session
+        return true;
+    } catch (Exception $e) {
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: SendEmail n'a pas reussi a envoyer un courriel : Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
     }
-
-    $_SESSION["time"] = time(); // Met à jour le timestamp pour prolonger la session
-    return true;
 }

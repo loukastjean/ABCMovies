@@ -9,17 +9,21 @@
  */
 function SendEmail($email, $subject, $message)
 {
-    // Définition des en-têtes de l'e-mail
-    $headers = [
-        "From" => "stjeanh25techinf@st-jean.h25.techinfo420.ca",
-        "X-Mailer" => "PHP/" . phpversion()
-    ];
+    try {
+        // Définition des en-têtes de l'e-mail
+        $headers = [
+            "From" => "stjeanh25techinf@st-jean.h25.techinfo420.ca",
+            "X-Mailer" => "PHP/" . phpversion()
+        ];
 
-    mail($email, $subject, $message, implode("\r\n", array_map(
-        fn ($key, $value) => "$key: $value",
-        array_keys($headers),
-        $headers
-    )));
+        mail($email, $subject, $message, implode("\r\n", array_map(
+            fn ($key, $value) => "$key: $value",
+            array_keys($headers),
+            $headers
+        )));
+    } catch (Exception $e) {
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: SendEmail n'a pas reussi a envoyer un courriel : Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
+    }
 }
 
 /**
@@ -29,13 +33,18 @@ function SendEmail($email, $subject, $message)
  */
 function SendVerificationCode($email)
 {
-    $code = rand(100000, 999999); // Génère un code à 6 chiffres
+    try {
+        $code = rand(100000, 999999); // Génère un code à 6 chiffres
 
-    session_start();
-    $_SESSION["code"] = $code; // Stocke le code dans la session
+        session_start();
+        $_SESSION["code"] = $code; // Stocke le code dans la session
+    
+        $subject = "Code de vérification ABCMovies";
+        $message = "Votre code de sécurité ABCMovies est: ".$code.". Attention, ce code est très important! Ne le divulguez à personne.";
+    
+        SendEmail($email, $subject, $message);
+    } catch (Exception $e) {
+        error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: SendVerificationCode n'a pas reussi a envoyer un courriel : Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
+    }
 
-    $subject = "Code de vérification ABCMovies";
-    $message = "Votre code de sécurité ABCMovies est: ".$code.". Attention, ce code est très important! Ne le divulguez à personne.";
-
-    SendEmail($email, $subject, $message);
 }

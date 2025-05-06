@@ -11,44 +11,48 @@ function sendJson(array $data)
     die();
 }
 
-// Vérifie si l'utilisateur est connecté
-if (!ResumeSession("logged")) {
-    sendJson(["error" => "Utilisateur non connecté", "success" => false]);
-}
-
-// Récupération et validation des paramètres
-$service = filter_input(INPUT_GET, "service", FILTER_DEFAULT);
-$id = filter_input(INPUT_GET, "id", FILTER_DEFAULT);
-
-if (empty($service) || empty($id)) {
-    sendJson(["error" => "Paramètre 'service' ou 'id' manquant", "success" => false]);
-}
-
-// Initialisation
-$username = $_SESSION["username"];
-$likedVideos = SelectLiked($username);
-$alreadyLiked = in_array($id, array_column($likedVideos, 'id'));
-
-// Si on demande à vérifier si c'est liké
-if (isset($_GET["verify"])) {
-    sendJson(["success" => true, "liked" => $alreadyLiked]);
-}
-
-// Si on demande à retirer un like
-if (isset($_GET["remove"])) {
-    // Si il est liked, proceder a la deletion
-    if ($alreadyLiked) {
-        RemoveLiked($username, $service, $id);
-        sendJson(["error" => 0, "success" => true]);
-    } else {
-        // Sinon, donner une erreur car tente de remove un like sur une video pas liked
-        sendJson(["error" => "Vidéo non likée", "success" => false]);
+try {
+    // Vérifie si l'utilisateur est connecté
+    if (!ResumeSession("logged")) {
+        sendJson(["error" => "Utilisateur non connecté", "success" => false]);
     }
-}
 
-// Si la vidéo est déjà likée
-if ($alreadyLiked) {
-    sendJson(["error" => "Vidéo déjà likée", "success" => false]);
+    // Récupération et validation des paramètres
+    $service = filter_input(INPUT_GET, "service", FILTER_DEFAULT);
+    $id = filter_input(INPUT_GET, "id", FILTER_DEFAULT);
+
+    if (empty($service) || empty($id)) {
+        sendJson(["error" => "Paramètre 'service' ou 'id' manquant", "success" => false]);
+    }
+
+    // Initialisation
+    $username = $_SESSION["username"];
+    $likedVideos = SelectLiked($username);
+    $alreadyLiked = in_array($id, array_column($likedVideos, 'id'));
+
+    // Si on demande à vérifier si c'est liké
+    if (isset($_GET["verify"])) {
+        sendJson(["success" => true, "liked" => $alreadyLiked]);
+    }
+
+    // Si on demande à retirer un like
+    if (isset($_GET["remove"])) {
+        // Si il est liked, proceder a la deletion
+        if ($alreadyLiked) {
+            RemoveLiked($username, $service, $id);
+            sendJson(["error" => 0, "success" => true]);
+        } else {
+            // Sinon, donner une erreur car tente de remove un like sur une video pas liked
+            sendJson(["error" => "Vidéo non likée", "success" => false]);
+        }
+    }
+
+    // Si la vidéo est déjà likée
+    if ($alreadyLiked) {
+        sendJson(["error" => "Vidéo déjà likée", "success" => false]);
+    }
+} catch (Exception $e) {
+    error_log("[".date("d/m/o H:i:s e", time())."] Tentative de like de ".$_SESSION["username"]." échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.like.log");
 }
 
 try {

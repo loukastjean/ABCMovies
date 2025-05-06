@@ -9,47 +9,53 @@ if (!isset($_GET["q"])) {
     die();
 }
 
-// Encode le paramètre de requête pour pouvoir faire la requête a TOU.TV
-$query = urlencode($_GET["q"]);
+$query;
 
-$shows = array();
+try {
+    // Encode le paramètre de requête pour pouvoir faire la requête a TOU.TV
+    $query = urlencode($_GET["q"]);
 
-// Faire une recherche à l'aide de l'API de TOU.TV
-$ch = curl_init(
-    "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=" . $query
-);
+    $shows = array();
 
-curl_setopt_array(
-    $ch,
-    [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => false,
-    ]
-);
+    // Faire une recherche à l'aide de l'API de TOU.TV
+    $ch = curl_init(
+        "https://services.radio-canada.ca/ott/catalog/v1/toutv/search?device=web&pageNumber=1&pageSize=999999999&term=" . $query
+    );
 
-$str_response = curl_exec($ch);
+    curl_setopt_array(
+        $ch,
+        [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+        ]
+    );
 
-$resp = json_decode($str_response, true);
+    $str_response = curl_exec($ch);
 
-curl_close($ch);
+    $resp = json_decode($str_response, true);
 
-// Parcourt chaque résultat de recherche
-foreach ($resp["result"] as $_ => $s) {
+    curl_close($ch);
 
-    // On ne garde que les éléments de type "Show" (émissions sans ordre particulier)
-    // ou "Season" (séries avec une structure d'épisodes, ex : Grey’s Anatomy)
-    if (!in_array($s["type"], ["Show", "Season"])) {
-        continue; // Ignore les types non pertinents
+    // Parcourt chaque résultat de recherche
+    foreach ($resp["result"] as $_ => $s) {
+
+        // On ne garde que les éléments de type "Show" (émissions sans ordre particulier)
+        // ou "Season" (séries avec une structure d'épisodes, ex : Grey’s Anatomy)
+        if (!in_array($s["type"], ["Show", "Season"])) {
+            continue; // Ignore les types non pertinents
+        }
+
+        $show = array();
+
+        $show["id"] = $s["url"];
+        $show["title"] = $s["title"];
+        $show["image"] = $s["image"]["url"];
+        $show["type"] = $s["type"];
+
+        array_push($shows, $show);
     }
 
-    $show = array();
-
-    $show["id"] = $s["url"];
-    $show["title"] = $s["title"];
-    $show["image"] = $s["image"]["url"];
-    $show["type"] = $s["type"];
-
-    array_push($shows, $show);
+    echo json_encode($shows);
+} catch (Exception $e) {
+    echo json_encode(["error" => "Erreur dans la recherche de shows $query"]);
 }
-
-echo json_encode($shows);
