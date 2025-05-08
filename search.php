@@ -51,7 +51,7 @@ if ($query == "") {
     $query = "*";
 }
 
-echo "placeSearchVideos(\"$query\", \"toutv\")";
+echo "placeSearchShows(\"$query\", \"toutv\")";
 ?>
 
 

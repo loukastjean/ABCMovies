@@ -33,8 +33,8 @@ if (ResumeSession("logged")) {
 <script>
 
 // Charge des vidéos recommandées pour différents types de contenu (films, documentaires, séries, etc...)
-placeRecommendedVideos("toutv", "film");
-placeRecommendedVideos("toutv", "documentaire");
-placeRecommendedVideos("toutv", "serie");
+placeRecommendedShows("toutv", "film");
+placeRecommendedShows("toutv", "documentaire");
+placeRecommendedShows("toutv", "serie");
 
 </script>
