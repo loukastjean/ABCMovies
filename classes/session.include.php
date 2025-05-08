@@ -36,7 +36,7 @@ function DeleteSession($session_name)
  * @param int $duree Durée de la session en secondes (par défaut : 1 heure)
  * @return void
  */
-function CreateSession($session_name, $duree = 60 * 60)
+function CreateSession($session_name, $duree = 60 * 60 * 5)
 {
     DeleteSession($session_name); // Supprime toute session existante avec le même nom
 
@@ -63,7 +63,7 @@ function CreateSession($session_name, $duree = 60 * 60)
  *
  * @return bool true si la session est valide, false sinon
  */
-function VerifySession(): bool
+function VerifySession($duree = 60 * 60 * 5): bool
 {
     if (session_status() == PHP_SESSION_ACTIVE) {
 
@@ -78,7 +78,7 @@ function VerifySession(): bool
         }
 
         // Vérifie que la session n’a pas expiré (1 heure)
-        if (time() > $_SESSION["time"] + 60 * 60) {
+        if (time() > $_SESSION["time"] + $duree) {
             return false;
         }
 
