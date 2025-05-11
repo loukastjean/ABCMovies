@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__."/classes/session.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/session.include.php";
 
-$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
+$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/common/nav.html");
 
 ResumeSession("logged");
 
@@ -16,13 +16,13 @@ $id = $_GET["id"];
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="./css/video/video-js.min.css" rel="stylesheet">
-    <script src="./js/video/video.min.js"></script>
+    <link href="/css/video/video-js.min.css" rel="stylesheet">
+    <script src="/js/video/video.min.js"></script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> | ABCMovies</title>
-    <link rel="stylesheet" href="./css/style.css"/>
-    <script src="./js/script.js"></script>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script type="text/javascript" src="/js/script.js"></script>
 
   </head>
   <body>
@@ -70,7 +70,7 @@ async function isVideoDownloaded() {
 
 // Une fois que la page est prête, démarre la récupération de la vidéo
 document.addEventListener("DOMContentLoaded", function() {
-    videoSrc = fetchVideo(service, id); // Charge une vidéo puis retourne le URL
+    videoSrc = fetchEpisode(service, id); // Charge une vidéo puis retourne le URL
 })
 
 // Appelle `isVideoDownloaded` toutes les 4 secondes jusqu’à ce que la vidéo soit chargée

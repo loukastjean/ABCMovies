@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/classes/session.include.php";
-require_once __DIR__ . "/classes/db.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/session.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/db.include.php";
 
 // Fonction d'envoi de réponse JSON
 function sendJson(array $data)

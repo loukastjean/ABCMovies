@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__."/classes/session.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/session.include.php";
 
-$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
+$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/common/nav.html");
 
 ResumeSession("logged");
 ?>
@@ -12,12 +12,12 @@ ResumeSession("logged");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABCMovies</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <?php echo $header ?>
     <main class="center-div">
-      <form action="./login.redirect.php" method="post" class="register-login-container">
+      <form action="index.redirect.php" method="post" class="register-login-container">
         <span class="register-login-title">Connectez vous à votre compte</span>
         <?php
         if (isset($_GET["error"])) {

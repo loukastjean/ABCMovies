@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/config.db.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/config.db.include.php";
 
 /**
  * Récupère un utilisateur à partir de son nom d'utilisateur.

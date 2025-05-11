@@ -15,7 +15,7 @@ async function placeRecommendedShows(service, contentType, amountOfShows = 8) {
 
     let categoryEl = document.getElementById(`${service}-${contentType}`);
 
-    url = `/ABCMovies/services/${service}/recommendations.php?category=${contentType}&amount=${amountOfShows}`;
+    url = `/services/${service}/recommendations.php?category=${contentType}&amount=${amountOfShows}`;
     recommendations = await fetchJSON(url);
 
     placeShows(categoryEl, recommendations.slice(0, amountOfShows), service);
@@ -25,11 +25,7 @@ async function placeRecommendedShows(service, contentType, amountOfShows = 8) {
 async function placeSearchShows(query, service, amountOfShows = 24) {
     mainEl = document.getElementsByClassName("category-background")[0];
 
-    console.log(service);
-    console.log(query);
-
-    url = `/ABCMovies/services/${service}/search.php?q=${query}&amount=${amountOfShows}`;
-    console.log(url);
+    url = `/services/${service}/search.php?q=${query}&amount=${amountOfShows}`;
 
     results = await fetchJSON(url);
 
@@ -41,6 +37,7 @@ async function placeShows(parentEl, shows, service) {
     shows.forEach(async show => {
         show = await getInfo(service, "show", show["id"]);
         let episode = show["seasons"][0]["episodes"][0];
+        console.log(episode["id"])
         await createMedia(parentEl, service, show, episode);
     });
 }
@@ -65,19 +62,19 @@ async function setPageTitle(episodeTitle) {
 
 // Récupère les informations d’un élément (show, épisode, etc.) via un service API
 async function getInfo(service, infoType, id) {
-    data = await fetchJSON(`/ABCMovies/services/${service}/info.php?type=${infoType}&id=${id}`, null);
+    data = await fetchJSON(`/services/${service}/info.php?type=${infoType}&id=${id}`, null);
     return data;
 }
 
 // Se connecte à un service pour obtenir les jetons d’authentification
 async function login(service, availability) {
-    tokens = await fetchJSON(`/ABCMovies/services/${service}/login.php?availability=${availability}`, null);
+    tokens = await fetchJSON(`/services/${service}/login.php?availability=${availability}`, null);
     return tokens;
 }
 
 // Télécharge un épisode via un service en fournissant des jetons
 async function download(service, id, tokens) {
-    let commandOutput = await fetchJSON(`/ABCMovies/services/${service}/download.php?id=${id}`, tokens);
+    let commandOutput = await fetchJSON(`/services/${service}/download.php?id=${id}`, tokens);
     return commandOutput;
 }
 
@@ -97,42 +94,42 @@ async function fetchEpisode(service, id) {
 
 // (Fonction incomplète ?) Télécharge une vidéo, probablement obsolète ou erronée
 async function getEpisodeInfo(id) {
-    let commandOutput = await fetchJSON(`/ABCMovies/services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
+    let commandOutput = await fetchJSON(`/services/${service}/download.php?id=${id}&tokens=${strTokens}`, null);
     return commandOutput;
 }
 
 // Ajoute une vidéo aux liked (changement d’icône + changement BD)
 async function addLiked(heartEl, service, id) {
-    let commandOutput = await fetchJSON(`/ABCMovies/like.php?id=${id}&service=${service}`, null);
+    let commandOutput = await fetchJSON(`/like.php?id=${id}&service=${service}`, null);
 
     if (!commandOutput["success"]) return;
 
-    heartEl.setAttribute("src", "/ABCMovies/images/heart.svg");
+    heartEl.setAttribute("src", "/images/heart.svg");
     heartEl.setAttribute("onclick", `removeLiked(this,'${service}','${id}')`);
 }
 
 // Retire une vidéo des liked
 async function removeLiked(heartEl, service, id) {
-    let commandOutput = await fetchJSON(`/ABCMovies/like.php?id=${id}&service=${service}&remove`, null);
+    let commandOutput = await fetchJSON(`/like.php?id=${id}&service=${service}&remove`, null);
 
     if (!commandOutput["success"]) return;
 
-    heartEl.setAttribute("src", "/ABCMovies/images/no-heart.svg");
+    heartEl.setAttribute("src", "/images/no-heart.svg");
     heartEl.setAttribute("onclick", `addLiked(this,'${service}','${id}')`);
 }
 
 // Vérifie si une vidéo est likée et met à jour l’icône en conséquence
 async function verifyLiked(heartEl, service, id) {
-    let commandOutput = await fetchJSON(`/ABCMovies/like.php?id=${id}&service=${service}&verify`, null);
+    let commandOutput = await fetchJSON(`/like.php?id=${id}&service=${service}&verify`, null);
 
-    if (!commandOutput["liked"]) {
-        heartEl.setAttribute("src", "/ABCMovies/images/no-heart.svg");
-        heartEl.setAttribute("onclick", `addLiked(this,'${service}','${id}')`);
-        return;
+    if (commandOutput["liked"]) {
+        heartEl.setAttribute("src", "/images/heart.svg");
+        heartEl.setAttribute("onclick", `removeLiked(this,'${service}','${id}')`);
     }
-
-    heartEl.setAttribute("src", "/ABCMovies/images/heart.svg");
-    heartEl.setAttribute("onclick", `removeLiked(this,'${service}','${id}')`);
+    else {
+        heartEl.setAttribute("src", "/images/no-heart.svg");
+        heartEl.setAttribute("onclick", `addLiked(this,'${service}','${id}')`);
+    }
 }
 
 // Crée dynamiquement une catégorie de vidéos (titre + conteneur)
@@ -153,9 +150,6 @@ async function createMedia(parentEl, service, show, episode) {
     let mediaGroupEl = document.createElement("div");
     mediaGroupEl.setAttribute("class", "media-group");
 
-    console.log(show);
-    console.log(episode);
-
     let mediaLinkEl = document.createElement("div");
     mediaLinkEl.setAttribute("class", "picture-related");
     show["image"] = show["image"].replace("_Size_", "384");
@@ -166,19 +160,19 @@ async function createMedia(parentEl, service, show, episode) {
 
     let heartEl = document.createElement("img");
     heartEl.setAttribute("class", "heart");
-    verifyLiked(heartEl, service, show["id"]); // Ajoute le bon état (liké ou non)
+    verifyLiked(heartEl, service, episode["id"]); // Ajoute le bon état (liké ou non)
 
     let mediaTextBackgroundEl = document.createElement("div");
     mediaTextBackgroundEl.setAttribute("class", "media-text-background");
 
     let descriptionEl = document.createElement("a");
     descriptionEl.setAttribute("class", "media-text-description");
-    descriptionEl.setAttribute("href", "/ABCMovies/video.php?service=" + service + "&id=" + episode["id"]);
+    descriptionEl.setAttribute("href", "/video.php?service=" + service + "&id=" + episode["id"]);
     descriptionEl.textContent = show["description"];
 
     let titleEl = document.createElement("a");
     titleEl.setAttribute("class", "media-text-title");
-    titleEl.setAttribute("href", "/ABCMovies/video.php?service=" + service + "&id=" + episode["id"]);
+    titleEl.setAttribute("href", "/video.php?service=" + service + "&id=" + episode["id"]);
     titleEl.textContent = show["title"];
 
     // Construction de la hiérarchie des éléments

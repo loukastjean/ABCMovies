@@ -110,5 +110,6 @@ function ResumeSession($session_name)
         return true;
     } catch (Exception $e) {
         error_log("[".date("d/m/o H:i:s e", time())."] Exception pdo: SendEmail n'a pas reussi a envoyer un courriel : Client ".$_SERVER['REMOTE_ADDR'].": ".$e->getMessage()."\n\r");
+        return false;
     }
 }

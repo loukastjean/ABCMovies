@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__."/classes/db.include.php";
-require_once __DIR__."/classes/session.include.php";
-require_once __DIR__."/classes/email.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/db.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/session.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/email.include.php";
 
 try {
     // Vérifie que les champs "username" et "password" ont été envoyés
@@ -28,7 +28,7 @@ try {
             error_log("[".date("d/m/o H:i:s e", time())."] ".$_SESSION["username"]." tente de se connecter (avant le 2FA): Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
             // Redirige vers la page de validation du code 2FA
-            header("Location: 2fa.php");
+            header("Location: ../2fa/");
             die();
         }
     }
@@ -40,4 +40,4 @@ try {
 error_log("[".date("d/m/o H:i:s e", time())."] Tentative de connexion échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 // Si la validation échoue ou les champs sont vides, redirige vers la page de connexion
-header("Location: login.php?error=wrong");
+header("Location: index.php?error=wrong");

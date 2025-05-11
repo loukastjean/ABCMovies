@@ -1,11 +1,12 @@
 <?php
-require_once __DIR__."/classes/session.include.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/session.include.php";
+
 if (!ResumeSession("auth")) {
-    header("Location: login.php");
+    header("Location: ../login/index.php");
     die();
 }
 
-$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.html");
+$header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/common/nav.html");
 
 ?>
 
@@ -16,14 +17,14 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/ABCMovies/common/nav.htm
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ABCMovies</title>
-    <link rel="stylesheet" href="./css/style.css"/>
-    <script type="text/javascript" src="./js/script.js"></script>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script type="text/javascript" src="/js/script.js"></script>
 
   </head>
   <body>
     <?php echo $header ?>
     <main class="center-div">
-        <form action="2fa.redirect.php" method="post" class="register-login-container">
+        <form action="index.redirect.php" method="post" class="register-login-container">
             <span class="register-login-title">Validation d'identité</span>
             <?php
             if (isset($_GET["error"])) {
