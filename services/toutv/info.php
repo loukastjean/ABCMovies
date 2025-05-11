@@ -99,7 +99,7 @@ function Show(string $id): string
                 $season["episodes"][] = [
                     "id" => (string) $e["idMedia"],
                     "title" => $e["title"],
-                    "description" => $e["description"] ? $e["description"] : $show["description"],
+                    "description" => isset($e["description"]) ? $e["description"] : $show["description"],
                     "image" => $e["images"]["card"]["url"],
                     "number" => $e["episodeNumber"],
                     "service" => "toutv"
