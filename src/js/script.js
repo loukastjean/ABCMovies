@@ -37,7 +37,6 @@ async function placeShows(parentEl, shows, service) {
     shows.forEach(async show => {
         show = await getInfo(service, "show", show["id"]);
         let episode = show["seasons"][0]["episodes"][0];
-        console.log(episode["id"])
         await createMedia(parentEl, service, show, episode);
     });
 }
