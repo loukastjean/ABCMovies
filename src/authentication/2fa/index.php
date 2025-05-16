@@ -24,7 +24,7 @@ $header = file_get_contents($_SERVER['DOCUMENT_ROOT']."/common/nav.html");
   <body>
     <?php echo $header ?>
     <main class="center-div">
-        <form action="index.redirect.php" method="post" class="register-login-container">
+        <form action="2fa.redirect.php" method="post" class="register-login-container">
             <span class="register-login-title">Validation d'identité</span>
             <?php
             if (isset($_GET["error"])) {

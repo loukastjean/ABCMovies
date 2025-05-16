@@ -34,10 +34,9 @@ try {
     }
 } catch (Exception $e) {
     error_log("[".date("d/m/o H:i:s e", time())."] ".$_SESSION["username"]." tente de se connecter (avant le 2FA): Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
-    die();
 }
 
 error_log("[".date("d/m/o H:i:s e", time())."] Tentative de connexion échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
 // Si la validation échoue ou les champs sont vides, redirige vers la page de connexion
-header("Location: index.php?error=wrong");
+header("Location: ./?error=wrong");

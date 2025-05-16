@@ -19,7 +19,7 @@ ResumeSession("logged");
   <body>
     <?php echo $header ?>
     <main class="center-div">
-      <form action="index.redirect.php" method="post" class="register-login-container">
+      <form action="register.redirect.php" method="post" class="register-login-container">
         <span class="register-login-title">Création d’un compte</span>
         <?php
         if (isset($_GET["error"])) {

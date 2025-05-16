@@ -29,25 +29,25 @@ try {
 
             error_log("[".date("d/m/o H:i:s e", time())."] ".$_SESSION["username"]." s'est connecté: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.successful.login.log");
 
-            header("Location: /index.php");
+            header("Location: /");
             die();
         } else {
 
             error_log("[".date("d/m/o H:i:s e", time())."] Tentative de 2FA de ".$_SESSION["username"]." échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
 
             // Code invalide → retour à la page de vérification
-            header("Location: index.php?error=wrongcode");
+            header("Location: ./?error=wrongcode");
             die();
         }
     }
 } catch (Exception $e) {
     error_log("[".date("d/m/o H:i:s e", time())."] Tentative de 2FA de ".$_SESSION["username"]." échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
-    header("Location: index.php?error=wrongcode");
+    header("Location: ./?error=wrongcode");
     die();
 }
 
 error_log("[".date("d/m/o H:i:s e", time())."] Tentative de 2FA de ".$_SESSION["username"]." échouée: Client ".$_SERVER['REMOTE_ADDR']."\n\r", 3, $_SERVER['DOCUMENT_ROOT']."/../logs/ABCMovies.db.failed.login.log");
-header("Location: index.php?error=nocode");
+header("Location: ./?error=nocode");
 
 /**
  * Vérifie que la session "auth" contient les éléments nécessaires pour la validation 2FA.
@@ -61,11 +61,11 @@ function Verify2FASession()
         if (session_status() == PHP_SESSION_ACTIVE) {
             // Si la session est invalide ou ne contient pas de code 2FA
             if (!VerifySession()) {
-                header("Location: index.php");
+                header("Location: ./");
                 die();
             }
             if (!isset($_SESSION["code"])) {
-                header("Location: index.php?error=nocode");
+                header("Location: ./?error=nocode");
                 die();
             }
         }
