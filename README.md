@@ -8,6 +8,11 @@ Il permet aussi la création de comptes et de l'authentification à deux facteur
 
 Quand il est connecté, l'utilisateur peut aussi "like" des vidéos.
 
+Malheureusement, il semblerait que TOU.TV ait changé quelques petites choses dans son encodage de vidéos, donc
+ffmpeg a maintenant de la difficulté à merge ces vidéos. Si vous voulez écouter des vidéos, essayez
+L'agent Jean, ou encore Stat, mais la majorité des vidéos sur la page d'accueil sont non-fonctionnelles.
+
+
 ## Self-host
 ```
 git clone https://github.com/loukastjean/ABCMovies.git
