@@ -3,9 +3,11 @@
 declare(strict_types=1);
 header('Content-type: application/json');
 
+$data = json_decode(file_get_contents("php://input"), true);
+
 // Vérifie que les paramètres requis sont bien présents
-if (!isset($_GET["id"]) || !isset($_POST["Authorization"]) || !isset($_POST["x-claims-token"])) {
-    error_log("download.php: There was a missing value in ".$_POST." or in ".$_GET);
+if (!isset($_GET["id"]) || !isset($data["Authorization"]) || !isset($data["x-claims-token"])) {
+    error_log("download.php: There was a missing value in ".$data." or in ".$_GET);
     die();
 }
 
@@ -13,8 +15,8 @@ try {
 
     // Récupère les paramètres d'entrée
     $id = $_GET["id"];
-    $authorization_token = $_POST["Authorization"];
-    $claims_token = $_POST["x-claims-token"];
+    $authorization_token = $data["Authorization"];
+    $claims_token = $data["x-claims-token"];
     
     // Prépare les en-têtes HTTP à envoyer à l’API de Tou.tv
     $headers = [

@@ -46,7 +46,11 @@ async function fetchJSON(url, data) {
     if (data) {
         return await fetch(url, {
             method: "POST",
-            body: new URLSearchParams(data)
+            headers: {
+                "Accept" : "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         }).then(response => response.json());
     } else {
         return await fetch(url).then(response => response.json());
